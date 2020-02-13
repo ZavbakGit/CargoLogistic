@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/print_graph"
+    app:startDestination="@id/printFragment">
+
+
+    <fragment
+        android:id="@+id/printFragment"
+        android:name="fun.gladkikh.cargologistic.ui.print.PrintFragment"
+        android:label="PrintFragment" />
+</navigation>
