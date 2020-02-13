@@ -6,13 +6,10 @@ import `fun`.gladkikh.cargologistic.di.ServicesModule
 import `fun`.gladkikh.cargologistic.di.ViewModelModule
 import `fun`.gladkikh.cargologistic.remote.RequestRemote
 import `fun`.gladkikh.cargologistic.remote.RequestRemoteImpl
-import `fun`.gladkikh.cargologistic.ui.ListPrinterDialog
 import `fun`.gladkikh.cargologistic.ui.print.PrintActivity
 import `fun`.gladkikh.cargologistic.ui.print.PrintFragment
 import `fun`.gladkikh.cargologistic.ui.print.PrintLabelDialogFragment
 import `fun`.gladkikh.cargologistic.ui.print.PrinterDialogFragment
-import `fun`.gladkikh.cargologistic.ui.print.old.PrintDialogOld
-import `fun`.gladkikh.cargologistic.ui.print.old.TestPrintFragment
 import android.app.Application
 import android.content.Context
 import dagger.Component
@@ -60,9 +57,6 @@ class App : Application() {
 )
 interface AppComponent {
     fun inject(mainActivity: PrintActivity)
-    fun inject(mainActivity: TestPrintFragment)
-    fun inject(printDialog: PrintDialogOld)
-    fun inject(listPrinterDialog: ListPrinterDialog)
     fun inject(printFragment: PrintFragment)
     fun inject(printLabelDialogFragment: PrintLabelDialogFragment)
     fun inject(printerDialogFragment: PrinterDialogFragment)

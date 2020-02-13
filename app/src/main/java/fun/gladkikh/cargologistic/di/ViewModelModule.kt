@@ -2,9 +2,6 @@ package `fun`.gladkikh.cargologistic.di
 import `fun`.gladkikh.cargologistic.common.presentation.ViewModelFactory
 import `fun`.gladkikh.cargologistic.presentation.print.PrintActivityViewModel
 import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.old.TestPrintFragmentViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.printdialog.PrintLabelDialogViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.PrinterDialogViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
@@ -24,21 +21,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(PrintLabelDialogViewModel::class)
-    abstract fun bindPrintFragmentViewModel(viewModel: PrintLabelDialogViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(PrintFragmentViewModel::class)
     abstract fun bindPrintLabelDialodViewModel(viewModel: PrintFragmentViewModel): ViewModel
-
-
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(PrinterDialogViewModel::class)
-    abstract fun bindPrinterDialogViewModel(viewModel: PrinterDialogViewModel): ViewModel
-
 
 
 }
