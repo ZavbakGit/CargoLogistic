@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 class LoginAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
-) : UseCase<None, String>() {
-    override suspend fun run(params: String): Either<Failure, None> {
+) : UseCase<AccountEntity, String>() {
+    override suspend fun run(params: String): Either<Failure, AccountEntity> {
         val account = accountRepository.getAccountEntity()
 
         if (account.isLeft) {
@@ -20,7 +20,7 @@ class LoginAccountUseCase @Inject constructor(
 
             return account.flatMap { accountEntity ->
                 if (accountEntity.password == params) {
-                    return@flatMap Either.Right(None())
+                    return@flatMap Either.Right(accountEntity)
                 } else {
                     return@flatMap login(params)
                 }
@@ -29,7 +29,7 @@ class LoginAccountUseCase @Inject constructor(
     }
 
 
-    private fun login(password: String): Either<Failure, None> {
+    private fun login(password: String): Either<Failure, AccountEntity> {
         val accountEntity = AccountEntity(
             user = null,
             guid = null,
@@ -42,6 +42,7 @@ class LoginAccountUseCase @Inject constructor(
                 accountRepository.login(password)
             }.flatMap {
                 accountRepository.saveAccountEntity(it)
+                return@flatMap Either.Right(it)
             }
     }
 

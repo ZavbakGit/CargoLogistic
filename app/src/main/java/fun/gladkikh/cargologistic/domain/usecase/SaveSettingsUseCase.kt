@@ -6,6 +6,7 @@ import `fun`.gladkikh.cargologistic.common.type.Failure
 import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.domain.entity.SettingsEntity
 import `fun`.gladkikh.cargologistic.domain.repository.SettingsRepository
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class SaveSettingsUseCase @Inject constructor(

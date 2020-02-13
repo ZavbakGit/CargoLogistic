@@ -4,19 +4,24 @@ import `fun`.gladkikh.cargologistic.common.type.Failure
 import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.Progress
 import `fun`.gladkikh.cargologistic.common.type.SingleLiveEvent
+import `fun`.gladkikh.cargologistic.ui.common.Command
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 abstract class BaseFragmentViewModel:ViewModel(){
-    private var failureData = SingleLiveEvent<Failure>()
-    private var messageData = SingleLiveEvent<Message>()
-    private var progressData = MutableLiveData<Progress>()
+    private val failureData = SingleLiveEvent<Failure>()
+    private val messageData = SingleLiveEvent<Message>()
+    private val progressData = MutableLiveData<Progress>()
+    private val commandData = SingleLiveEvent<Command>()
+
+
 
 
     fun getFailureData():LiveData<Failure> = failureData
     fun getMessageData():LiveData<Message> = messageData
     fun getProgressData():LiveData<Progress> = progressData
+    fun getCommandData():LiveData<Command> = commandData
 
 
     init {
@@ -35,7 +40,18 @@ abstract class BaseFragmentViewModel:ViewModel(){
         this.progressData.postValue(progress)
     }
 
+    fun updateCommand(command: Command){
+        this.commandData.postValue(command)
+    }
 
+
+    fun handleMessageViewModel(message: Message) {
+        updateMessage(message)
+    }
+
+    fun handleErrorViewModel(failure: Failure) {
+        updateFailure(failure)
+    }
 
     override fun onCleared() {
         super.onCleared()

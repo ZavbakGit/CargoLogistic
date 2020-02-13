@@ -33,7 +33,7 @@ class Request constructor(private val networkHandler: NetworkHandler) {
                 false -> Either.Left(response.parseError())
             }
         } catch (exception: Throwable) {
-            Either.Left(Failure(exception.message))
+            Either.Left(Failure(exception.toString()))
         }
     }
 }

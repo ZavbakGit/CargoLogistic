@@ -16,12 +16,7 @@ object Constants {
     }
     val OS_VERSION by lazy { android.os.Build.VERSION.SDK_INT.toString() }
 
-    const val COMMAND_OPEN_MAIN = "open_form_main"
-    const val COMMAND_OPEN_SETTINGS = "open_form_settings"
-    const val COMMAND_OPEN_LOGIN = "open_form_login"
-    const val COMMAND_OPEN_ROUTE = "open_form_route"
-    const val COMMAND_OPEN_PRINT = "open_form_print"
-
+    const val COMMAND_OPEN_MAIN = 1
     const val IS_TEST_BUILD = true
 }
 

@@ -28,7 +28,7 @@ class AccountRepositoryImpl(
             try {
                 App.requestRemote!!.request(it.login1C!!, it.password1C!!, gson.toJson(data))
             } catch (e: Exception) {
-                return@flatMap Either.Left(Failure(e.message))
+                return@flatMap Either.Left(Failure(e.toString()))
             }
         }
     }

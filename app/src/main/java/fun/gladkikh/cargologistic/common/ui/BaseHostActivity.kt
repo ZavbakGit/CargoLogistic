@@ -1,6 +1,5 @@
 package `fun`.gladkikh.cargologistic.common.ui
 
-import `fun`.gladkikh.cargologistic.R
 import `fun`.gladkikh.cargologistic.common.type.Progress
 import android.app.Activity
 import android.os.Bundle
@@ -10,16 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import kotlinx.android.synthetic.main.progress_overlay.*
 import javax.inject.Inject
 
 abstract class BaseHostActivity : AppCompatActivity() {
 
-    private val contentId = R.layout.host_activity
-
+    abstract val layoutId: Int
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ abstract class BaseHostActivity : AppCompatActivity() {
     }
 
     open fun setupContent() {
-        setContentView(contentId)
+        setContentView(layoutId)
     }
 
     fun showMessage(message: String) {

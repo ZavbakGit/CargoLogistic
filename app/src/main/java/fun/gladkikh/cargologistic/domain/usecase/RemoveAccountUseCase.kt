@@ -4,14 +4,15 @@ import `fun`.gladkikh.cargologistic.common.interactor.UseCase
 import `fun`.gladkikh.cargologistic.common.type.Either
 import `fun`.gladkikh.cargologistic.common.type.Failure
 import `fun`.gladkikh.cargologistic.common.type.None
+import `fun`.gladkikh.cargologistic.common.type.flatMap
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
 import javax.inject.Inject
 
 class RemoveAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
-) : UseCase<None, None>() {
-    override suspend fun run(params: None): Either<Failure, None> {
+) : UseCase<AccountEntity, None>() {
+    override suspend fun run(params: None): Either<Failure, AccountEntity> {
 
         val accountEntity = AccountEntity(
             user = null,
@@ -21,5 +22,8 @@ class RemoveAccountUseCase @Inject constructor(
         )
 
         return accountRepository.saveAccountEntity(accountEntity)
+            .flatMap {
+                Either.Right(accountEntity)
+            }
     }
 }

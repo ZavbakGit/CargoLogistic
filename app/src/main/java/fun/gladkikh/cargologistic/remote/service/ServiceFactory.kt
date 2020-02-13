@@ -24,7 +24,7 @@ class ServiceFactory(val baseUrl:String) {
 
     private fun makeService(okHttpClient: OkHttpClient, gson: Gson): ApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://172.31.255.150//UT/hs/api/")
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -35,7 +35,7 @@ class ServiceFactory(val baseUrl:String) {
         return OkHttpClient.Builder()
             .enableTls12OnPreLollipop()
             .addInterceptor(httpLoggingInterceptor)
-            .connectTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .build()
     }

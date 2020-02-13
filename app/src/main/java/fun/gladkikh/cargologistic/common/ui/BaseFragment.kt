@@ -1,5 +1,6 @@
 package `fun`.gladkikh.cargologistic.common.ui
 
+import `fun`.gladkikh.cargologistic.common.type.ErrorDescriptionFailure
 import `fun`.gladkikh.cargologistic.common.type.Failure
 import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.Progress
@@ -30,7 +31,19 @@ abstract class BaseFragment : Fragment() {
     }
 
     fun handleMessage(message: Message?) = base { showMessage(message?.message ?: "") }
-    fun handleFailure(failure: Failure?) = base { showMessage(failure?.message ?: "") }
+    fun handleFailure(failure: Failure?) = base {
+
+        when(failure){
+            is ErrorDescriptionFailure ->{
+                showMessage(failure.errorDescriptionEntity.description)
+            }
+            else ->{
+                showMessage(failure?.message ?: "")
+            }
+        }
+
+
+    }
     fun handleProgress(progress: Progress?) = base { handleProgressBar(progress) }
 
     inline fun base(block: BaseHostActivity.() -> Unit) {
