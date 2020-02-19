@@ -1,5 +1,8 @@
 package `fun`.gladkikh.cargologistic
 
+import `fun`.gladkikh.cargologistic.common.type.Either
+import `fun`.gladkikh.cargologistic.common.type.flatMap
+import `fun`.gladkikh.cargologistic.common.type.onNext
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,5 +16,9 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+
+        val A = Either.Right("Hi")
+        val B = Either.Right("World")
+
     }
 }

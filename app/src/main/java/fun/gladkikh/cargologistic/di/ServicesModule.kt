@@ -1,4 +1,5 @@
 package `fun`.gladkikh.cargologistic.di
+
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.data.Preferences
 import `fun`.gladkikh.cargologistic.preferences.PreferencesImpl
@@ -19,7 +20,9 @@ class ServicesModule {
     @Provides
     @Singleton
     fun provideGson(): Gson {
-        return GsonBuilder().create()
+        return GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create()
     }
 
     @Provides

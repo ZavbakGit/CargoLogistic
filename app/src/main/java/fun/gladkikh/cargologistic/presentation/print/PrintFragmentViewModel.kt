@@ -61,7 +61,8 @@ class PrintFragmentViewModel @Inject constructor(private val testLong: TestLongU
                 productEntity = ProductEntity(
                     guid = "111",
                     name = "Помидоры в томатном соусе",
-                    barcode = "77785656546"
+                    barcode = "77785656546",
+                    listUnit = listOf()
                 )
 
             )

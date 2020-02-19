@@ -16,6 +16,8 @@ import `fun`.gladkikh.cargologistic.ui.print.PrintLabelDialogFragment
 import `fun`.gladkikh.cargologistic.ui.print.PrinterDialogFragment
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsActivity
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsFragment
+import `fun`.gladkikh.cargologistic.ui.test.TestActivity
+import `fun`.gladkikh.cargologistic.ui.test.TestFragment
 import android.app.Application
 import android.content.Context
 import dagger.Component
@@ -72,5 +74,7 @@ interface AppComponent {
     fun inject(settingsActivity: SettingsActivity)
     fun inject(mainFragment: MainFragment)
     fun inject(mainActivity: MainActivity)
+    fun inject(testActivity: TestActivity)
+    fun inject(testFragment: TestFragment)
 
 }

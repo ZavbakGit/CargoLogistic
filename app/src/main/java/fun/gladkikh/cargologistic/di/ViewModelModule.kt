@@ -8,6 +8,8 @@ import `fun`.gladkikh.cargologistic.presentation.print.PrintActivityViewModel
 import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
 import `fun`.gladkikh.cargologistic.presentation.setting.SettingActivityViewModel
 import `fun`.gladkikh.cargologistic.presentation.setting.SettingFragmentViewModel
+import `fun`.gladkikh.cargologistic.presentation.test.TestActivityViewModel
+import `fun`.gladkikh.cargologistic.presentation.test.TestFragmentViewModel
 import `fun`.gladkikh.cargologistic.ui.main.MainActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -62,6 +64,18 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MainFragmentViewModel::class)
     abstract fun bindMainFragmentViewModel(viewModel: MainFragmentViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TestActivityViewModel::class)
+    abstract fun bindTestActivityViewModel(viewModel: TestActivityViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TestFragmentViewModel::class)
+    abstract fun bindTestFragmentViewModel(viewModel: TestFragmentViewModel): ViewModel
 
 
 
