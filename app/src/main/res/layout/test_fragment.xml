@@ -56,6 +56,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Печать этикетки" />
+            <Button
+                android:id="@+id/btLongOperation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Длинная операция" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -7,13 +7,14 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
+            <option value="$PROJECT_DIR$/.." />
+            <option value="$PROJECT_DIR$/../app" />
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/barcode" />
+            <option value="$PROJECT_DIR$/../netreqest" />
+            <option value="$PROJECT_DIR$/../preference" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
-        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>

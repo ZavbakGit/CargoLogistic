@@ -6,13 +6,12 @@ import `fun`.gladkikh.cargologistic.common.ui.BaseFragment
 import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
 import `fun`.gladkikh.cargologistic.presentation.test.TestFragmentViewModel
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.test_fragment.*
 
 class TestFragment : BaseFragment() {
     override val layoutId = R.layout.test_fragment
-
     private lateinit var viewModel: TestFragmentViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
@@ -29,16 +28,23 @@ class TestFragment : BaseFragment() {
         }
 
     }
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        (activity as TestActivity).getBarcodeData().observe(viewLifecycleOwner, Observer {
+            tvMessage.text = (it ?: "Пусто") + "*\n \n " + tvMessage.text.toString()
+        })
+
         btTestGetProductByBarcode.setOnClickListener {
             viewModel.getProductByBarcode("2000000000916")
         }
 
         btPrintLabel.setOnClickListener {
             viewModel.printLabel()
+        }
+
+        btLongOperation.setOnClickListener {
+            viewModel.executeLongOperation()
         }
     }
 }

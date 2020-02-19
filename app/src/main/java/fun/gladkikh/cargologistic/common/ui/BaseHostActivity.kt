@@ -1,5 +1,8 @@
 package `fun`.gladkikh.cargologistic.common.ui
 
+import `fun`.gladkikh.cargologistic.common.type.ErrorDescriptionFailure
+import `fun`.gladkikh.cargologistic.common.type.Failure
+import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.Progress
 import android.app.Activity
 import android.os.Bundle
@@ -35,6 +38,17 @@ abstract class BaseHostActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    fun handleMessage(message: Message?) = base { showMessage(message?.message ?: "") }
+    fun handleFailure(failure: Failure?) = base {
+        when(failure){
+            is ErrorDescriptionFailure ->{
+                showMessage(failure.errorDescriptionEntity.description)
+            }
+            else ->{
+                showMessage(failure?.message ?: "")
+            }
+        }
+    }
     fun handleProgressBar(progress: Progress?) {
         if (progress?.isOpen == true) {
             progressView.visibility = View.VISIBLE
@@ -43,7 +57,6 @@ abstract class BaseHostActivity : AppCompatActivity() {
             progressView.visibility = View.GONE
             tvMessageProgress.text = ""
         }
-
     }
 
     inline fun <reified T : ViewModel> viewModel(body: T.() -> Unit): T {

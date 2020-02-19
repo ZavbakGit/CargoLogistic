@@ -9,6 +9,7 @@ import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.ApplySettingsUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.GetProductByGuidUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.PrintLabelUseCase
+import `fun`.gladkikh.cargologistic.domain.usecase.TestLongUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class TestFragmentViewModel @Inject constructor(
     private val getProductByGuidUseCase: GetProductByGuidUseCase,
     private val applySettingsUseCase: ApplySettingsUseCase,
-    private val printLabelUseCase: PrintLabelUseCase
+    private val printLabelUseCase: PrintLabelUseCase,
+    private val longUseCase: TestLongUseCase
 ) : BaseFragmentViewModel() {
 
     init {
@@ -82,6 +84,18 @@ class TestFragmentViewModel @Inject constructor(
             either.either(::handleErrorViewModel) { }
         }
     }
+
+    fun executeLongOperation() {
+        updateProgress(Progress(true, "Получаем данные!"))
+        longUseCase(5, viewModelScope) {
+            updateProgress(Progress(false))
+            it.either(::updateFailure, {
+                updateTextData("Выполнили!")
+            })
+        }
+    }
+
+
 }
 
 
