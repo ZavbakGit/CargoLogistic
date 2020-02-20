@@ -40,7 +40,7 @@ class LoginFragmentViewModel @Inject constructor(
 
 
     private fun getCurrentAccount() {
-        getAccountUseCase(None(), viewModelScope) {
+      getAccountUseCase(None(), viewModelScope) {
             it.either(::handleErrorLogin, ::handleCurrentAccountViewModel)
         }
     }
