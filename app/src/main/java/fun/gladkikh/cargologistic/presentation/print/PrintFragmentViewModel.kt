@@ -4,8 +4,12 @@ import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
 import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.common.type.Progress
+import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
+import `fun`.gladkikh.cargologistic.domain.usecase.GetAccountUseCase
+import `fun`.gladkikh.cargologistic.domain.usecase.GetProductByBarcodeUseCase
+import `fun`.gladkikh.cargologistic.domain.usecase.PrintLabelUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.TestLongUseCase
 import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
 import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.StatePrinterDialog
@@ -13,36 +17,22 @@ import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.StatePrinte
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import java.util.*
 import javax.inject.Inject
 
-class PrintFragmentViewModel @Inject constructor(private val testLong: TestLongUseCase) :
+class PrintFragmentViewModel @Inject constructor(
+    private val testLong: TestLongUseCase,
+    private val getAccountUseCase: GetAccountUseCase,
+    private val getProductByBarcodeUseCase: GetProductByBarcodeUseCase,
+    private val printLabelUseCase: PrintLabelUseCase
+) :
     BaseFragmentViewModel() {
 
-    private val listPrinter = MutableLiveData<List<PrinterEntity>>()
-    fun getListPrinter(): LiveData<List<PrinterEntity>> = listPrinter
-
-    fun updateListPrinter(listPrinter: List<PrinterEntity>?) {
-        this.listPrinter.postValue(listPrinter)
-    }
 
 
     init {
-        val list = listOf(
-            PrinterEntity(
-                guid = "111",
-                name = "Принтер №1 Маленикая этикетка",
-                current = false
-            ),
-            PrinterEntity(
-                guid = "222",
-                name = "Принтер №2 Маленикая этикетка",
-                current = true
-            )
-        )
-
-        listPrinter.postValue(list)
+        initAccount()
     }
-
 
     //<editor-fold desc="PrintDialog">
     private val statePrintLabelDialog = MutableLiveData<StatePrintLabelDialog>()
@@ -72,19 +62,26 @@ class PrintFragmentViewModel @Inject constructor(private val testLong: TestLongU
     fun resultPrintLabelDialog(state: StatePrintLabelDialog?) {
         if (state?.isPositiveEvent != null) {
             if (state.isPositiveEvent == true) {
-                try {
-                    updateMessage(Message(state.toString()))
-                } catch (e: Exception) {
-                }
+                printLabel(
+                    guidPrinter = listPrinter.value!!.find { it.current == true }!!.guid!!,
+                    dateCreate = state.dateCreate!!,
+                    barcode = state.barcode?:"",
+                    guidProduct = state.productEntity!!.guid,
+                    count = state.count!!
+                )
             }
-
-            this.statePrintLabelDialog.postValue(StatePrintLabelDialog(isOpen = false))
+            updateStatePrintLabelDialog(StatePrintLabelDialog(isOpen = false))
         }
     }
     //</editor-fold>
 
     //<editor-fold desc="PrinterDialog">
     private val statePrinterDialog = MutableLiveData<StatePrinterDialog>()
+    private val listPrinter = MutableLiveData<List<PrinterEntity>>()
+    fun getListPrinter(): LiveData<List<PrinterEntity>> = listPrinter
+    fun updateListPrinter(listPrinter: List<PrinterEntity>?) {
+        this.listPrinter.postValue(listPrinter)
+    }
 
     fun getStatePrinterDialog(): LiveData<StatePrinterDialog> = statePrinterDialog
     fun updateStatePrinterDialog(state: StatePrinterDialog) {
@@ -103,18 +100,68 @@ class PrintFragmentViewModel @Inject constructor(private val testLong: TestLongU
 
     fun resultPrinterDialog(state: StatePrinterDialog?) {
         if (state?.isPositiveEvent != null) {
-
             if (state.isPositiveEvent == true) {
-                try {
-                    updateListPrinter(state.listPrinter)
-                } catch (e: Exception) {
-                }
+                updateListPrinter(state.listPrinter)
             }
-
-            this.statePrinterDialog.postValue(StatePrinterDialog(isOpen = false))
+            updateStatePrinterDialog(StatePrinterDialog(isOpen = false))
         }
     }
     //</editor-fold>
+
+    private fun printLabel(
+        guidProduct: String,
+        dateCreate: Date,
+        barcode: String,
+        count: Int,
+        guidPrinter: String
+    ) {
+        updateProgress(Progress(true, "Получаем данные!"))
+
+        val param = PrintLabelUseCase.Params(
+            guidProduct = guidProduct,
+            dataCreate = dateCreate,
+            barcode = barcode,
+            count = count,
+            guidPrinter = guidPrinter
+        )
+
+        printLabelUseCase(param, viewModelScope) {
+            updateProgress(Progress(false))
+            it.either(::updateFailure, ::handlePrintLabel)
+        }
+    }
+
+    private fun handlePrintLabel(date: Date) {
+        updateMessage(Message(date.toString()))
+    }
+
+    private fun handleLongOperation(none: None) {
+        openPintLabelDialog()
+    }
+
+    private fun initAccount() {
+        updateProgress(Progress(true, "Получаем данные!"))
+        getAccountUseCase(None(), viewModelScope) {
+            updateProgress(Progress(false))
+            it.either(::updateFailure, ::handleInitAccount)
+        }
+    }
+
+    private fun handleInitAccount(accountEntity: AccountEntity) {
+        updateListPrinter(accountEntity.settings?.listPrinter)
+    }
+
+    private fun handleGetProductByBarcode(productEntity: ProductEntity,barcode:String) {
+        statePrintLabelDialog.postValue(
+            StatePrintLabelDialog(
+                isOpen = true,
+                count = 1,
+                isPositiveEvent = null,
+                productEntity = productEntity,
+                barcode = barcode
+            )
+        )
+    }
 
     fun executeLongOperation() {
         updateProgress(Progress(true, "Получаем данные!"))
@@ -124,9 +171,15 @@ class PrintFragmentViewModel @Inject constructor(private val testLong: TestLongU
         }
     }
 
-    private fun handleLongOperation(none: None) {
-        //updateMessage(Message("Выполнили долгую операцию!"))
-        openPintLabelDialog()
+    fun readBarcode(barcode: String?) {
+        if (barcode != null) {
+            updateProgress(Progress(true, "Получаем данные!"))
+            getProductByBarcodeUseCase(barcode, viewModelScope) {
+                updateProgress(Progress(false))
+                it.either(::updateFailure) {product->
+                    handleGetProductByBarcode(product,barcode)
+                }
+            }
+        }
     }
-
 }

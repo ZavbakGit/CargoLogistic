@@ -7,7 +7,7 @@ import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.common.type.Progress
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.ApplySettingsUseCase
-import `fun`.gladkikh.cargologistic.domain.usecase.GetProductByGuidUseCase
+import `fun`.gladkikh.cargologistic.domain.usecase.GetProductByBarcodeUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.PrintLabelUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.TestLongUseCase
 import androidx.lifecycle.LiveData
@@ -17,7 +17,7 @@ import java.util.*
 import javax.inject.Inject
 
 class TestFragmentViewModel @Inject constructor(
-    private val getProductByGuidUseCase: GetProductByGuidUseCase,
+    private val getProductByGuidUseCase: GetProductByBarcodeUseCase,
     private val applySettingsUseCase: ApplySettingsUseCase,
     private val printLabelUseCase: PrintLabelUseCase,
     private val longUseCase: TestLongUseCase

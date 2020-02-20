@@ -8,6 +8,7 @@ import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
 import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
 import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.StatePrinterDialog
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.test_print_fragment.*
 
 class PrintFragment : BaseFragment() {
@@ -57,6 +58,11 @@ class PrintFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        (activity as PrintActivity).getBarcodeData().observe(viewLifecycleOwner, Observer {
+            viewModel.readBarcode(it)
+        })
+
         btLongOperation.setOnClickListener {
             viewModel.executeLongOperation()
         }
@@ -68,6 +74,8 @@ class PrintFragment : BaseFragment() {
         btOpenPrinterDialog.setOnClickListener {
             viewModel.openPinterDialog()
         }
+
+
 
     }
 }

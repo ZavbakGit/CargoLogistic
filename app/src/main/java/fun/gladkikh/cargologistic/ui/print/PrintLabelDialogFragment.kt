@@ -2,6 +2,7 @@ package `fun`.gladkikh.cargologistic.ui.print
 
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.R
+import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.common.ui.BaseDialog
 import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
@@ -9,11 +10,11 @@ import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
 import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Printer
 import android.view.*
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy
 import kotlinx.android.synthetic.main.print_dialog.*
+import java.util.*
 
 
 class PrintLabelDialogFragment : BaseDialog() {
@@ -88,16 +89,64 @@ class PrintLabelDialogFragment : BaseDialog() {
         }
 
         btSubmit.setOnClickListener {
-            viewModel.resultPrintLabelDialog(
-                viewModel.getStatePrintLabelDialog().value!!.copy(
-                    isPositiveEvent = true,
-                    count = edCount.text.toString().toIntOrNull() ?: 0
-                )
-            )
+            getData(edDateCreate.text.toString())
+                .flatMap {
+                    val count = edCount.text.toString().toIntOrNull() ?: 0
+
+                    if (count == 0) {
+                        return@flatMap Either.Left(Failure("Не заполнено количество!"))
+                    }
+
+                    val sate = viewModel.getStatePrintLabelDialog().value!!.copy(
+                        isPositiveEvent = true,
+                        count = count,
+                        dateCreate = it
+                    )
+
+                    return@flatMap Either.Right(sate)
+                }.either({
+                    viewModel.updateFailure(it)
+                },{
+                    viewModel.resultPrintLabelDialog(it)
+                })
         }
+
+        edDateCreate.requestFocus()
 
     }
 
+    private fun getData(strDate: String): Either<Failure, Date> {
+        try {
+            viewModel.updateMessage(Message(strDate))
+            val list = strDate.split(".")
+
+            var yaar = list.get(2).toInt()
+            var month = list.get(1).toInt()
+            var day = list.get(0).toInt()
+            if (yaar !in 15..35) {
+                return Either.Left(Failure("Не верно указан год!"))
+            }
+            yaar += 2000
+
+            if (month !in (1..12)) {
+                return Either.Left(Failure("Не верно указан месяц!"))
+            }
+
+            if (day !in (1..31)) {
+                return Either.Left(Failure("Не верно указан день!"))
+            }
+
+            val date = GregorianCalendar()
+                .apply {
+                    set(yaar, month-1, day)
+                }.time
+
+            return Either.Right(date)
+        } catch (e: Exception) {
+            return Either.Left(Failure("Неверная дата!"))
+        }
+
+    }
 
     private fun closeDialog() {
         viewModel.resultPrintLabelDialog(
