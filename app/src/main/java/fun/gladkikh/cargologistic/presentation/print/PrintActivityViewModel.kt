@@ -6,7 +6,6 @@ import `fun`.gladkikh.cargologistic.domain.entity.SettingsEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.GetSettingsUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import javax.inject.Inject
 

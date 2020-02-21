@@ -80,7 +80,8 @@ class PrinterDialogFragment : BaseDialog() {
 
     private fun closeDialog() {
         viewModel.resultPrinterDialog(
-            viewModel.getStatePrinterDialog().value!!.copy(isPositiveEvent = false)
+            viewModel.getStatePrinterDialog().value!!
+                .copy(isPositiveEvent = false,isOpen = false)
         )
     }
 

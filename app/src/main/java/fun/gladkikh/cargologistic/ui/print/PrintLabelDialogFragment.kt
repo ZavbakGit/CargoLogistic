@@ -5,6 +5,8 @@ import `fun`.gladkikh.cargologistic.R
 import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.common.ui.BaseDialog
 import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
+import `fun`.gladkikh.cargologistic.common.utils.getDateDMY
+import `fun`.gladkikh.cargologistic.common.utils.toStringDMY
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
 import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
 import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
@@ -14,7 +16,6 @@ import android.view.*
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy
 import kotlinx.android.synthetic.main.print_dialog.*
-import java.util.*
 
 
 class PrintLabelDialogFragment : BaseDialog() {
@@ -89,7 +90,7 @@ class PrintLabelDialogFragment : BaseDialog() {
         }
 
         btSubmit.setOnClickListener {
-            getData(edDateCreate.text.toString())
+            edDateCreate.text.toString().getDateDMY()
                 .flatMap {
                     val count = edCount.text.toString().toIntOrNull() ?: 0
 
@@ -106,51 +107,21 @@ class PrintLabelDialogFragment : BaseDialog() {
                     return@flatMap Either.Right(sate)
                 }.either({
                     viewModel.updateFailure(it)
-                },{
+                }, {
                     viewModel.resultPrintLabelDialog(it)
                 })
         }
 
-        edDateCreate.requestFocus()
-
     }
 
-    private fun getData(strDate: String): Either<Failure, Date> {
-        try {
-            viewModel.updateMessage(Message(strDate))
-            val list = strDate.split(".")
-
-            var yaar = list.get(2).toInt()
-            var month = list.get(1).toInt()
-            var day = list.get(0).toInt()
-            if (yaar !in 15..35) {
-                return Either.Left(Failure("Не верно указан год!"))
-            }
-            yaar += 2000
-
-            if (month !in (1..12)) {
-                return Either.Left(Failure("Не верно указан месяц!"))
-            }
-
-            if (day !in (1..31)) {
-                return Either.Left(Failure("Не верно указан день!"))
-            }
-
-            val date = GregorianCalendar()
-                .apply {
-                    set(yaar, month-1, day)
-                }.time
-
-            return Either.Right(date)
-        } catch (e: Exception) {
-            return Either.Left(Failure("Неверная дата!"))
-        }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        closeDialog()
     }
-
     private fun closeDialog() {
         viewModel.resultPrintLabelDialog(
-            viewModel.getStatePrintLabelDialog().value!!.copy(isPositiveEvent = false)
+            viewModel.getStatePrintLabelDialog().value!!
+                .copy(isPositiveEvent = false,isOpen = false)
         )
     }
 
@@ -169,6 +140,13 @@ class PrintLabelDialogFragment : BaseDialog() {
             tvBarcode.text = statePrintDialog.productEntity?.barcode ?: ""
             tvProduct.text = statePrintDialog.productEntity?.name ?: ""
             edCount.setText((statePrintDialog.count ?: 0).toString())
+            edDateCreate.requestFocus()
+
+            if (statePrintDialog.dateCreate != null){
+                edDateCreate.setText(statePrintDialog.dateCreate.toStringDMY())
+                edCount.requestFocus()
+            }
+
         }
     }
 }

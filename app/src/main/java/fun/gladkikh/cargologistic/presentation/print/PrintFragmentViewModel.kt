@@ -4,6 +4,8 @@ import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
 import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.common.type.Progress
+import `fun`.gladkikh.cargologistic.common.type.flatMap
+import `fun`.gladkikh.cargologistic.common.utils.getDateYMD
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
@@ -65,13 +67,14 @@ class PrintFragmentViewModel @Inject constructor(
                 printLabel(
                     guidPrinter = listPrinter.value!!.find { it.current == true }!!.guid!!,
                     dateCreate = state.dateCreate!!,
-                    barcode = state.barcode?:"",
+                    barcode = state.barcode ?: "",
                     guidProduct = state.productEntity!!.guid,
                     count = state.count!!
                 )
             }
-            updateStatePrintLabelDialog(StatePrintLabelDialog(isOpen = false))
         }
+
+        updateStatePrintLabelDialog(StatePrintLabelDialog(isOpen = false))
     }
     //</editor-fold>
 
@@ -103,8 +106,9 @@ class PrintFragmentViewModel @Inject constructor(
             if (state.isPositiveEvent == true) {
                 updateListPrinter(state.listPrinter)
             }
-            updateStatePrinterDialog(StatePrinterDialog(isOpen = false))
         }
+
+        updateStatePrinterDialog(StatePrinterDialog(isOpen = false))
     }
     //</editor-fold>
 
@@ -115,7 +119,7 @@ class PrintFragmentViewModel @Inject constructor(
         count: Int,
         guidPrinter: String
     ) {
-        updateProgress(Progress(true, "Получаем данные!"))
+        updateProgress(Progress(true, "Печатаем этикетку!"))
 
         val param = PrintLabelUseCase.Params(
             guidProduct = guidProduct,
@@ -140,7 +144,7 @@ class PrintFragmentViewModel @Inject constructor(
     }
 
     private fun initAccount() {
-        updateProgress(Progress(true, "Получаем данные!"))
+        updateProgress(Progress(true, "Получаем данные Акаунта!"))
         getAccountUseCase(None(), viewModelScope) {
             updateProgress(Progress(false))
             it.either(::updateFailure, ::handleInitAccount)
@@ -151,20 +155,21 @@ class PrintFragmentViewModel @Inject constructor(
         updateListPrinter(accountEntity.settings?.listPrinter)
     }
 
-    private fun handleGetProductByBarcode(productEntity: ProductEntity,barcode:String) {
+    private fun handleGetProductByBarcode(productEntity: ProductEntity, barcode: String,dateCreate:Date? = null) {
         statePrintLabelDialog.postValue(
             StatePrintLabelDialog(
                 isOpen = true,
                 count = 1,
                 isPositiveEvent = null,
                 productEntity = productEntity,
-                barcode = barcode
+                barcode = barcode,
+                dateCreate = dateCreate
             )
         )
     }
 
     fun executeLongOperation() {
-        updateProgress(Progress(true, "Получаем данные!"))
+        updateProgress(Progress(true, "Долгая операция!"))
         testLong(5, viewModelScope) {
             updateProgress(Progress(false))
             it.either(::updateFailure, ::handleLongOperation)
@@ -172,14 +177,29 @@ class PrintFragmentViewModel @Inject constructor(
     }
 
     fun readBarcode(barcode: String?) {
-        if (barcode != null) {
-            updateProgress(Progress(true, "Получаем данные!"))
-            getProductByBarcodeUseCase(barcode, viewModelScope) {
-                updateProgress(Progress(false))
-                it.either(::updateFailure) {product->
-                    handleGetProductByBarcode(product,barcode)
+        if (statePrintLabelDialog.value?.isOpen != true){
+            if (!barcode.isNullOrBlank()) {
+                if (barcode.take(2).toUpperCase() != "TA") {
+                    getProductByBarcode(barcode, null)
+
+                } else {
+                    barcode.substring((2..7)).getDateYMD()
+                        .either(::updateFailure) {
+                            getProductByBarcode(barcode.substring(8 until barcode.length), it)
+                        }
                 }
             }
         }
     }
+
+    private fun getProductByBarcode(barcode: String, dateCreate: Date?) {
+        updateProgress(Progress(true, "Запрос товара!"))
+        getProductByBarcodeUseCase(barcode, viewModelScope) {
+            updateProgress(Progress(false))
+            it.either(::updateFailure) { product ->
+                handleGetProductByBarcode(product, barcode,dateCreate)
+            }
+        }
+    }
+
 }

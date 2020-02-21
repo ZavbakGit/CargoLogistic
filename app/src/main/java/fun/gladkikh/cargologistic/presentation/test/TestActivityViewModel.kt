@@ -1,14 +1,11 @@
 package `fun`.gladkikh.cargologistic.presentation.test
 
 import `fun`.gladkikh.cargologistic.common.presentation.BaseActivityViewModel
-import `fun`.gladkikh.cargologistic.common.type.Failure
-import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.domain.entity.SettingsEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.GetSettingsUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import javax.inject.Inject
 
