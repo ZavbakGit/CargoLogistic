@@ -9,7 +9,7 @@
     </style>
 
     <style name="Widget.AppCompat.Button.Colored.MyButton">
-        <item name="android:background">@color/secondaryColor</item>
+        <item name="android:background">@drawable/button_selector</item>
     </style>
 
 </resources>
