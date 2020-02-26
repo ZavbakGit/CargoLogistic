@@ -39,14 +39,7 @@ class PrinterDialogFragment : BaseDialog() {
                     list, currentPrinter
                 ) { dialog, item ->
                     currentPrinter = item
-                }
-                .setPositiveButton(
-                    "OK"
-                ) { dialog, id ->
                     sendResult(currentPrinter)
-                }
-                .setNegativeButton("Отмена") { dialog, id ->
-                    closeDialog()
                 }
 
             builder.create()
@@ -81,7 +74,7 @@ class PrinterDialogFragment : BaseDialog() {
     private fun closeDialog() {
         viewModel.resultPrinterDialog(
             viewModel.getStatePrinterDialog().value!!
-                .copy(isPositiveEvent = false,isOpen = false)
+                .copy(isPositiveEvent = false, isOpen = false)
         )
     }
 
