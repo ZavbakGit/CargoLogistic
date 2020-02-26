@@ -13,6 +13,7 @@ import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLab
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy
 import kotlinx.android.synthetic.main.print_dialog.*
@@ -74,7 +75,12 @@ class PrintLabelDialogFragment : BaseDialog() {
             )
 
         edDateCreate.hint = listener.placeholder()
+        edDateCreate.setOnFocusChangeListener { view, b ->
+            if (b){
+                (view as? EditText)?.selectAll()
+            }
 
+        }
 
 
         view?.isFocusableInTouchMode = true
