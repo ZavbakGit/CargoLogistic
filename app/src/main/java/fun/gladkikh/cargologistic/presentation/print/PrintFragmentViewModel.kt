@@ -30,8 +30,6 @@ class PrintFragmentViewModel @Inject constructor(
 ) :
     BaseFragmentViewModel() {
 
-
-
     init {
         initAccount()
     }

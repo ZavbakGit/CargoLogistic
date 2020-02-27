@@ -15,9 +15,6 @@ abstract class BaseFragmentViewModel:ViewModel(){
     private val progressData = MutableLiveData<Progress>()
     private val commandData = SingleLiveEvent<Command>()
 
-
-
-
     fun getFailureData():LiveData<Failure> = failureData
     fun getMessageData():LiveData<Message> = messageData
     fun getProgressData():LiveData<Progress> = progressData
