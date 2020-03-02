@@ -32,5 +32,8 @@ interface ProductDao {
     @Query("SELECT * FROM product WHERE guid = :guid")
     fun getProductByGuid(guid: String): ProductDB
 
+
+    @Query("SELECT product.guid, product.goodsName FROM product,barcode WHERE barcode = :barcode")
+    fun getProductByBarcode(barcode:String):Flowable<ProductDB>
     //@Query("SELECT * FROM ProductDB WHERE ")
 }

@@ -122,6 +122,18 @@ class GoodsDaoTest {
             .assertValue{it.isEmpty()}
     }
 
+    @Test fun insertAndGetGoodsByBarcode() {
+        database.productDao().insertProductCompletable(PRODUCT).blockingAwait()
+        database.barcodeDao().insertBarcode(BARCODE1).blockingAwait()
+        database.barcodeDao().insertBarcode(BARCODE2).blockingAwait()
+
+        database.productDao().getProductByBarcode("46207784")
+            .test()
+            .assertNoErrors()
+            .awaitDone(500,TimeUnit.MILLISECONDS)
+            .assertValue{it.goodsName == PRODUCT.goodsName && it.guid == PRODUCT.guid}
+    }
+
     companion object{
         private val PRODUCT = ProductDB(guid = "1",goodsName = "tovar")
         private val BARCODE1 = BarcodeDB(guidProduct = "1",guid = "a1",barcode = "4601546080882")
