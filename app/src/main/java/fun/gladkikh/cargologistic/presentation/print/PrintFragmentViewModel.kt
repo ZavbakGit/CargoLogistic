@@ -51,7 +51,7 @@ class PrintFragmentViewModel @Inject constructor(
                 productEntity = ProductEntity(
                     guid = "111",
                     name = "Помидоры в томатном соусе",
-                    barcode = "77785656546",
+                    listBarcode = listOf("77785656546"),
                     listUnit = listOf()
                 )
 

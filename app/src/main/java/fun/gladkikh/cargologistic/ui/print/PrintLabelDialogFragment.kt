@@ -143,7 +143,7 @@ class PrintLabelDialogFragment : BaseDialog() {
         if (statePrintDialog?.isOpen != true) {
             dismiss()
         } else {
-            tvBarcode.text = statePrintDialog.productEntity?.barcode ?: ""
+            tvBarcode.text = statePrintDialog.productEntity?.listBarcode?.first() ?: ""
             tvProduct.text = statePrintDialog.productEntity?.name ?: ""
             edCount.setText((statePrintDialog.count ?: 0).toString())
             edDateCreate.requestFocus()

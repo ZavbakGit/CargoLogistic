@@ -71,7 +71,7 @@ class AccountRepositoryImpl(
 
                             return@map ProductEntity(
                                 guid = response.guidProduct!!,
-                                barcode = null,
+                                listBarcode = listOf(response.barcode),
                                 name = response.name,
                                 listUnit = response.listUnit
                             )
