@@ -4,7 +4,6 @@ import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
 import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.common.type.Progress
-import `fun`.gladkikh.cargologistic.common.type.flatMap
 import `fun`.gladkikh.cargologistic.common.utils.getDateYMD
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
@@ -15,7 +14,6 @@ import `fun`.gladkikh.cargologistic.domain.usecase.PrintLabelUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.TestLongUseCase
 import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
 import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.StatePrinterDialog
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope

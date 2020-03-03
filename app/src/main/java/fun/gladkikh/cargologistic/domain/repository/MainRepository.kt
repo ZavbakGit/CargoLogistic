@@ -9,14 +9,13 @@ import java.util.*
 
 interface MainRepository {
     fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity>
-
-    fun getListPrintEntity():LiveData<PrintEntity>
-
     fun printLabel(
         guidPrinter: String,
         guidProduct: String,
         barcode: String?,
         dataCreate: Date,
         count: Int
-    ): Either<Failure, Date>
+    ): Either<Failure, PrintEntity>
+
+    fun getListPrintEntity():LiveData<PrintEntity>
 }

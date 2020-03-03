@@ -1,9 +1,7 @@
 package `fun`.gladkikh.cargologistic.domain.usecase
+import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.common.interactor.UseCase
-import `fun`.gladkikh.cargologistic.common.type.Either
-import `fun`.gladkikh.cargologistic.common.type.Failure
-import `fun`.gladkikh.cargologistic.common.type.None
-import `fun`.gladkikh.cargologistic.common.type.flatMap
+import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
 import javax.inject.Inject
@@ -17,7 +15,6 @@ class LoginAccountUseCase @Inject constructor(
         if (account.isLeft) {
             return login(params)
         } else {
-
             return account.flatMap { accountEntity ->
                 if (accountEntity.password == params) {
                     return@flatMap Either.Right(accountEntity)
@@ -27,7 +24,6 @@ class LoginAccountUseCase @Inject constructor(
             }
         }
     }
-
 
     private fun login(password: String): Either<Failure, AccountEntity> {
         val accountEntity = AccountEntity(
@@ -43,8 +39,9 @@ class LoginAccountUseCase @Inject constructor(
             }.flatMap {
                 accountRepository.saveAccountEntity(it)
                 return@flatMap Either.Right(it)
+            }.onNext {
+                App.initAccount(it)
             }
     }
-
 
 }

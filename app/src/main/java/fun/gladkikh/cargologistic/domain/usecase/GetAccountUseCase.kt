@@ -1,4 +1,6 @@
 package `fun`.gladkikh.cargologistic.domain.usecase
+
+import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.common.interactor.UseCase
 import `fun`.gladkikh.cargologistic.common.type.Either
 import `fun`.gladkikh.cargologistic.common.type.Failure
@@ -11,6 +13,11 @@ class GetAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) : UseCase<AccountEntity, None>() {
     override suspend fun run(params: None): Either<Failure, AccountEntity> {
-        return accountRepository.getAccountEntity()
+        val account = App.accountEntity
+        return if (account != null) {
+            Either.Right(account)
+        } else {
+            Either.Left(Failure("Не записан аккаунт"))
+        }
     }
 }
