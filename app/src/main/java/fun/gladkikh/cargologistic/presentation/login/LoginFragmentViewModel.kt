@@ -84,7 +84,7 @@ class LoginFragmentViewModel @Inject constructor(
             updateProgress(Progress(false))
         }
 
-        App.initRequestRemote(settings.host!!)
+        App.initRequestRemote(settings)
     }
 
     fun testRemote() {

@@ -4,5 +4,5 @@ import `fun`.gladkikh.cargologistic.common.type.Failure
 
 
 interface RequestRemote {
-    fun request(user:String,password:String,data: String): Either<Failure, String>
+    fun request(data: String): Either<Failure, String>
 }

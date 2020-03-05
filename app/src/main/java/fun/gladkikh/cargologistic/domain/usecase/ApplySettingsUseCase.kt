@@ -17,7 +17,7 @@ class ApplySettingsUseCase @Inject constructor(
                 if (it.host.isNullOrBlank()){
                     return@flatMap Either.Left(Failure("Не заполнен host"))
                 }
-                App.initRequestRemote(it.host)
+                App.initRequestRemote(it)
                 return@flatMap Either.Right(None())
             } catch (e: Exception) {
                 return@flatMap Either.Left(Failure(e.toString()))

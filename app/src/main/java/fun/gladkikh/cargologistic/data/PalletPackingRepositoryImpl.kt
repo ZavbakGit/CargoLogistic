@@ -3,7 +3,6 @@ package `fun`.gladkikh.cargologistic.data
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.common.type.Either
 import `fun`.gladkikh.cargologistic.common.type.Failure
-import `fun`.gladkikh.cargologistic.common.type.flatMap
 import `fun`.gladkikh.cargologistic.common.type.map
 import `fun`.gladkikh.cargologistic.domain.entity.OrderEntity
 import `fun`.gladkikh.cargologistic.domain.entity.PalletEntity
@@ -14,28 +13,38 @@ class PalletPackingRepositoryImpl(
     private val preferences: Preferences,
     private val gson: Gson
 ) : PalletPackingRepository {
+
+    /**
+     * Получает Заказ по штрихкоду
+     */
     override fun getOrderByBarcode(barcode: String): Either<Failure, OrderEntity> {
         val data = GetOrderByBarcodeRq(barcode = barcode)
 
-        return preferences.getSettings()
-            .flatMap { settings ->
-                try {
-                    App.requestRemote!!.request(
-                        settings.login1C!!,
-                        settings.password1C!!,
-                        gson.toJson(data)
-                    )
-                        .map {
-                            gson.fromJson(it, OrderEntity::class.java)
-                        }
-                } catch (e: Exception) {
-                    return@flatMap Either.Left(Failure(e.toString()))
+        return try {
+            App.requestRemote!!.request(gson.toJson(data))
+                .map {
+                    gson.fromJson(it, OrderEntity::class.java)
                 }
-            }
+        } catch (e: Exception) {
+            Either.Left(Failure(e.toString()))
+        }
+
     }
 
+    /**
+     * Получает паллет по штрихкоду
+     */
     override fun getPalletByBarcode(barcode: String): Either<Failure, PalletEntity> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val data = GetPalletByBarcode(barcode = barcode)
+
+        return try {
+            App.requestRemote!!.request(gson.toJson(data))
+                .map {
+                    gson.fromJson(it, PalletEntity::class.java)
+                }
+        } catch (e: Exception) {
+            Either.Left(Failure(e.toString()))
+        }
     }
 
     private data class GetOrderByBarcodeRq(val command: String = "get_order", val barcode: String)

@@ -15,15 +15,15 @@ import android.content.Context
 class RequestRemoteImpl constructor(
     context: Context,
     isDebug: Boolean,
-    baseUrl: String
+    baseUrl: String,
+    val user:String,
+    val password: String
 ) : RequestRemote {
 
     private val request = Request(NetworkHandler(context))
     private val service = ServiceFactory(baseUrl).makeService(isDebug)
 
     override fun request(
-        user: String,
-        password: String,
         data: String
     ): Either<Failure, String> {
         val auth = AutorithationUtil.getStringAutorization(user, password)

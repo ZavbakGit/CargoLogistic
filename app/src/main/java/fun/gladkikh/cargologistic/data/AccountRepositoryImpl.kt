@@ -33,7 +33,7 @@ class AccountRepositoryImpl(
         val data = TestRemoteRequestDataRq("test")
         return preferences.getSettings().flatMap {
             try {
-                App.requestRemote!!.request(it.login1C!!, it.password1C!!, gson.toJson(data))
+                App.requestRemote!!.request(gson.toJson(data))
             } catch (e: Exception) {
                 return@flatMap Either.Left(Failure(e.toString()))
             }
@@ -61,11 +61,7 @@ class AccountRepositoryImpl(
                 preferences.getSettings()
             }.flatMap { settings ->
                 try {
-                    App.requestRemote!!.request(
-                        settings.login1C!!,
-                        settings.password1C!!,
-                        gson.toJson(data)
-                    )
+                    App.requestRemote!!.request(gson.toJson(data))
                         .map {
                             val response = gson.fromJson(it, GetProductByBarcodeRsData::class.java)
 
@@ -89,11 +85,7 @@ class AccountRepositoryImpl(
         return preferences.getSettings()
             .flatMap { settings ->
                 try {
-                    App.requestRemote!!.request(
-                        settings.login1C!!,
-                        settings.password1C!!,
-                        gson.toJson(data)
-                    )
+                    App.requestRemote!!.request(gson.toJson(data))
                         .map {
                             gson.fromJson(it, AccountEntity::class.java)
                         }
@@ -134,11 +126,7 @@ class AccountRepositoryImpl(
                 preferences.getSettings()
             }.flatMap { settings ->
                 try {
-                    App.requestRemote!!.request(
-                        settings.login1C!!,
-                        settings.password1C!!,
-                        gson.toJson(data)
-                    )
+                    App.requestRemote!!.request(gson.toJson(data))
                         .map {
                             val response = gson.fromJson(it, printLabelRsData::class.java)
                             return@map response.date

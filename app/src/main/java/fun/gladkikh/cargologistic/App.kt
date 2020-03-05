@@ -5,6 +5,7 @@ import `fun`.gladkikh.cargologistic.di.RepositoryModule
 import `fun`.gladkikh.cargologistic.di.ServicesModule
 import `fun`.gladkikh.cargologistic.di.ViewModelModule
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
+import `fun`.gladkikh.cargologistic.domain.entity.SettingsEntity
 import `fun`.gladkikh.cargologistic.remote.RequestRemote
 import `fun`.gladkikh.cargologistic.remote.RequestRemoteImpl
 import `fun`.gladkikh.cargologistic.ui.login.LoginActivity
@@ -40,8 +41,13 @@ class App : Application() {
 
         fun appContext(): Context? = instance?.applicationContext
 
-        fun initRequestRemote(baseUrl: String) {
-            requestRemote = RequestRemoteImpl(instance!!, Constants.IS_TEST_BUILD, baseUrl)
+        fun initRequestRemote(settingsEntity: SettingsEntity) {
+            requestRemote = RequestRemoteImpl(
+                context =instance!!,
+                isDebug = Constants.IS_TEST_BUILD,
+                baseUrl = settingsEntity.host?:"",
+                password = settingsEntity.password1C?:"",
+                user = settingsEntity.login1C?:"")
         }
 
         fun initAccount(accountEntity: AccountEntity) {
