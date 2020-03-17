@@ -17,8 +17,7 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
 
-        val A = Either.Right("Hi")
-        val B = Either.Right("World")
+
 
     }
 }

@@ -18,5 +18,7 @@ object Constants {
 
     const val COMMAND_OPEN_MAIN = 1
     const val IS_TEST_BUILD = true
+    const val DATABASE_NAME = "cargologistic-db"
+
 }
 

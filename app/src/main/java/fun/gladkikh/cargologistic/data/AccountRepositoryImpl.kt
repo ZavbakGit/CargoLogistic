@@ -6,7 +6,9 @@ import `fun`.gladkikh.cargologistic.Constants
 import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.common.utils.toFormatISO
 import `fun`.gladkikh.cargologistic.common.utils.toSimpleDate
+import `fun`.gladkikh.cargologistic.db.createGuid
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
+import `fun`.gladkikh.cargologistic.domain.entity.Barcode
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.entity.UnitEntity
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
@@ -67,7 +69,7 @@ class AccountRepositoryImpl(
 
                             return@map ProductEntity(
                                 guid = response.guidProduct!!,
-                                listBarcode = listOf(response.barcode),
+                                listBarcode = listOf(Barcode(createGuid(),response.barcode)),
                                 name = response.name,
                                 listUnit = response.listUnit
                             )

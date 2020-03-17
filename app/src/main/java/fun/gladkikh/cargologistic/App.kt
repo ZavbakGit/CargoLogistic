@@ -1,5 +1,6 @@
 package `fun`.gladkikh.cargologistic
 
+import `fun`.gladkikh.cargologistic.db.AppDatabase
 import `fun`.gladkikh.cargologistic.di.AppModule
 import `fun`.gladkikh.cargologistic.di.RepositoryModule
 import `fun`.gladkikh.cargologistic.di.ServicesModule
@@ -65,6 +66,8 @@ class App : Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .build()
+
+        AppDatabase.getInstance(this)
     }
 }
 
