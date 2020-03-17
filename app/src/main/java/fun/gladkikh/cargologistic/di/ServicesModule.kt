@@ -1,10 +1,10 @@
 package `fun`.gladkikh.cargologistic.di
 
 import `fun`.gladkikh.cargologistic.App
-import `fun`.gladkikh.cargologistic.data.Preferences
+import `fun`.gladkikh.cargologistic.data.PreferencesRequest
 import `fun`.gladkikh.cargologistic.preferences.PreferencesImpl
 import `fun`.gladkikh.cargologistic.preferences.SharedPrefsManager
-import `fun`.gladkikh.cargologistic.remote.RequestRemote
+import `fun`.gladkikh.cargologistic.data.RemoteRequest
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
@@ -34,13 +34,13 @@ class ServicesModule {
 
     @Provides
     @Singleton
-    fun providePreferences(sharedPrefsManager: SharedPrefsManager): Preferences {
+    fun providePreferences(sharedPrefsManager: SharedPrefsManager): PreferencesRequest {
         return PreferencesImpl(sharedPrefsManager)
     }
 
     @Provides
     @Singleton
-    fun provideRequestRemote(): RequestRemote? {
+    fun provideRequestRemote(): RemoteRequest? {
         return App.requestRemote
     }
 }

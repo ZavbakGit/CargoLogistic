@@ -3,6 +3,7 @@ package `fun`.gladkikh.cargologistic.remote
 
 import `fun`.gladkikh.cargologistic.common.type.Either
 import `fun`.gladkikh.cargologistic.common.type.Failure
+import `fun`.gladkikh.cargologistic.data.RemoteRequest
 import `fun`.gladkikh.cargologistic.remote.core.AutorithationUtil
 import `fun`.gladkikh.cargologistic.remote.core.NetworkHandler
 import `fun`.gladkikh.cargologistic.remote.core.Request
@@ -18,7 +19,7 @@ class RequestRemoteImpl constructor(
     baseUrl: String,
     val user:String,
     val password: String
-) : RequestRemote {
+) : RemoteRequest {
 
     private val request = Request(NetworkHandler(context))
     private val service = ServiceFactory(baseUrl).makeService(isDebug)

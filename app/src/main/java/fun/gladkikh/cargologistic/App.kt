@@ -7,7 +7,7 @@ import `fun`.gladkikh.cargologistic.di.ServicesModule
 import `fun`.gladkikh.cargologistic.di.ViewModelModule
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.SettingsEntity
-import `fun`.gladkikh.cargologistic.remote.RequestRemote
+import `fun`.gladkikh.cargologistic.data.RemoteRequest
 import `fun`.gladkikh.cargologistic.remote.RequestRemoteImpl
 import `fun`.gladkikh.cargologistic.ui.login.LoginActivity
 import `fun`.gladkikh.cargologistic.ui.login.LoginFragment
@@ -35,7 +35,7 @@ class App : Application() {
     companion object {
         lateinit var appComponent: AppComponent
         var instance: App? = null
-        var requestRemote: RequestRemote? = null
+        var requestRemote: RemoteRequest? = null
             private set
         var accountEntity: AccountEntity? = null
             private set

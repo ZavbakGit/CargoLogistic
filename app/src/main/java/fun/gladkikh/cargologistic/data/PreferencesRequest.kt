@@ -7,7 +7,7 @@ import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.SettingsEntity
 
-interface Preferences {
+interface PreferencesRequest {
     fun getSettings(): Either<Failure, SettingsEntity>
     fun saveSettings(settingsEntity: SettingsEntity): Either<Failure, None>
     fun getAccountEntity(): Either<Failure, AccountEntity>

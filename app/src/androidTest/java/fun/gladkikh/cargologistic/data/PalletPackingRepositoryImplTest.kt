@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 class PalletPackingRepositoryImplTest {
 
     lateinit var gson: Gson
-    lateinit var preef: Preferences
+    lateinit var preef: PreferencesRequest
     lateinit var settingsRepository: SettingsRepository
     lateinit var repository: PalletPackingRepository
 

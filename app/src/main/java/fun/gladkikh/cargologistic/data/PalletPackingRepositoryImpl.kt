@@ -10,7 +10,7 @@ import `fun`.gladkikh.cargologistic.domain.repository.PalletPackingRepository
 import com.google.gson.Gson
 
 class PalletPackingRepositoryImpl(
-    private val preferences: Preferences,
+    private val preferences: PreferencesRequest,
     private val gson: Gson
 ) : PalletPackingRepository {
 

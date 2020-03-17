@@ -5,7 +5,6 @@ import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.Constants
 import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.common.utils.toFormatISO
-import `fun`.gladkikh.cargologistic.common.utils.toSimpleDate
 import `fun`.gladkikh.cargologistic.db.createGuid
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.Barcode
@@ -18,7 +17,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class AccountRepositoryImpl(
-    private val preferences: Preferences,
+    private val preferences: PreferencesRequest,
     private val gson: Gson
 ) : AccountRepository {
 

@@ -1,7 +1,7 @@
 package `fun`.gladkikh.cargologistic.di
 
 import `fun`.gladkikh.cargologistic.data.AccountRepositoryImpl
-import `fun`.gladkikh.cargologistic.data.Preferences
+import `fun`.gladkikh.cargologistic.data.PreferencesRequest
 import `fun`.gladkikh.cargologistic.data.SettingsRepositoryImpl
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
 import `fun`.gladkikh.cargologistic.domain.repository.SettingsRepository
@@ -15,13 +15,13 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideSettingsRepository(preferences: Preferences): SettingsRepository {
+    fun provideSettingsRepository(preferences: PreferencesRequest): SettingsRepository {
         return SettingsRepositoryImpl(preferences)
     }
 
     @Provides
     @Singleton
-    fun provideAccountRepository(preferences: Preferences,
+    fun provideAccountRepository(preferences: PreferencesRequest,
                                  gson: Gson
     ): AccountRepository {
         return AccountRepositoryImpl(preferences,gson)
