@@ -23,6 +23,7 @@ import `fun`.gladkikh.cargologistic.ui.test.TestActivity
 import `fun`.gladkikh.cargologistic.ui.test.TestFragment
 import android.app.Application
 import android.content.Context
+import com.google.gson.GsonBuilder
 import dagger.Component
 import javax.inject.Singleton
 
@@ -40,15 +41,20 @@ class App : Application() {
         var accountEntity: AccountEntity? = null
             private set
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create()
+
         fun appContext(): Context? = instance?.applicationContext
 
         fun initRequestRemote(settingsEntity: SettingsEntity) {
             requestRemote = RequestRemoteImpl(
-                context =instance!!,
+                context = instance!!,
                 isDebug = Constants.IS_TEST_BUILD,
-                baseUrl = settingsEntity.host?:"",
-                password = settingsEntity.password1C?:"",
-                user = settingsEntity.login1C?:"")
+                baseUrl = settingsEntity.host ?: "",
+                password = settingsEntity.password1C ?: "",
+                user = settingsEntity.login1C ?: ""
+            )
         }
 
         fun initAccount(accountEntity: AccountEntity) {

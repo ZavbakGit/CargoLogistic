@@ -1,12 +1,16 @@
 package `fun`.gladkikh.cargologistic.db
 
 import androidx.room.TypeConverter
-import java.util.Calendar
+import java.util.*
 
 class Converters {
     @TypeConverter
-    fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
+    fun fromTimestamp(value: Long?): Date? {
+        return if (value == null) null else Date(value)
+    }
 
-    @TypeConverter fun datestampToCalendar(value: Long): Calendar =
-        Calendar.getInstance().apply { timeInMillis = value }
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
 }

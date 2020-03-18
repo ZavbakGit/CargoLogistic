@@ -24,9 +24,7 @@ class ServicesModule {
     @Provides
     @Singleton
     fun provideGson(): Gson {
-        return GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-            .create()
+        return App.gson
     }
 
     @Provides

@@ -3,6 +3,7 @@ package `fun`.gladkikh.cargologistic.db
 import `fun`.gladkikh.cargologistic.Constants.DATABASE_NAME
 import `fun`.gladkikh.cargologistic.db.dao.ProductDao
 import `fun`.gladkikh.cargologistic.db.entity.BarcodeDb
+import `fun`.gladkikh.cargologistic.db.entity.PrintLabelDb
 import `fun`.gladkikh.cargologistic.db.entity.ProductDb
 import `fun`.gladkikh.cargologistic.db.entity.UnitDb
 import android.content.Context
@@ -13,7 +14,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [ProductDb::class, UnitDb::class, BarcodeDb::class],
+    entities = [ProductDb::class, UnitDb::class, BarcodeDb::class, PrintLabelDb::class],
     version = 1,
     exportSchema = false
 )
