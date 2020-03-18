@@ -8,6 +8,7 @@ import `fun`.gladkikh.cargologistic.preferences.SharedPrefsManager
 import `fun`.gladkikh.cargologistic.data.RemoteRequest
 import `fun`.gladkikh.cargologistic.db.AppDatabase
 import `fun`.gladkikh.cargologistic.db.DataBaseRequestImpl
+import `fun`.gladkikh.cargologistic.db.dao.PrintLabelDao
 import `fun`.gladkikh.cargologistic.db.dao.ProductDao
 import android.content.Context
 import android.content.SharedPreferences
@@ -41,8 +42,14 @@ class ServicesModule {
 
     @Provides
     @Singleton
-    fun provideDataBaseRequest(productDao: ProductDao):DataBaseRequest{
-        return DataBaseRequestImpl(productDao)
+    fun providePrintLabelDao(appDatabase: AppDatabase):PrintLabelDao{
+        return appDatabase.printLabelDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataBaseRequest(productDao: ProductDao,printLabelDao: PrintLabelDao):DataBaseRequest{
+        return DataBaseRequestImpl(productDao,printLabelDao)
     }
 
     @Provides

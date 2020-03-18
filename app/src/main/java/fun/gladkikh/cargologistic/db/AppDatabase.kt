@@ -1,6 +1,7 @@
 package `fun`.gladkikh.cargologistic.db
 
 import `fun`.gladkikh.cargologistic.Constants.DATABASE_NAME
+import `fun`.gladkikh.cargologistic.db.dao.PrintLabelDao
 import `fun`.gladkikh.cargologistic.db.dao.ProductDao
 import `fun`.gladkikh.cargologistic.db.entity.BarcodeDb
 import `fun`.gladkikh.cargologistic.db.entity.PrintLabelDb
@@ -22,6 +23,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
+    abstract fun printLabelDao(): PrintLabelDao
 
     companion object {
 

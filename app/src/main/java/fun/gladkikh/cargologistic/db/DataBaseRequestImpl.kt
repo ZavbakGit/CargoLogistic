@@ -2,14 +2,18 @@ package `fun`.gladkikh.cargologistic.db
 
 import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.data.DataBaseRequest
+import `fun`.gladkikh.cargologistic.db.dao.PrintLabelDao
 import `fun`.gladkikh.cargologistic.db.dao.ProductDao
 import `fun`.gladkikh.cargologistic.db.entity.ProductDb
+import `fun`.gladkikh.cargologistic.domain.entity.PrintLabelEntity
+import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.mapper.transform
 import android.content.Context
 
 class DataBaseRequestImpl(
-    private val productDao: ProductDao
+    private val productDao: ProductDao,
+    private val printLabelDao: PrintLabelDao
 ) : DataBaseRequest {
 
     override fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity> {
@@ -54,9 +58,20 @@ class DataBaseRequestImpl(
     override fun removeAll(): Either<Failure, None> {
         return try {
             productDao.deleteAllProduct()
+            printLabelDao.deleteAllPrintLabel()
             Either.Right(None())
         } catch (e: Exception) {
             Either.Left(FailureInDB())
+        }
+    }
+
+    override fun savePrintLabel(printLabelEntity: PrintLabelEntity): Either<Failure, None> {
+        try {
+            printLabelDao.insertOrUpdate(printLabelEntity.transform())
+            return Either.Right(None())
+
+        } catch (e: Exception) {
+            return Either.Left(FailureInDB())
         }
     }
 

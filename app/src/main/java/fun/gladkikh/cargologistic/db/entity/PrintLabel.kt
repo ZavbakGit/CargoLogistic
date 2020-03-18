@@ -14,5 +14,5 @@ data class PrintLabelDb(
     val printerObj: String,
     val countLabel: Int,
     @TypeConverters(Converters::class) val dateCreate: Date,
-    @TypeConverters(Converters::class) val datePrint: Date
+    @TypeConverters(Converters::class) val datePrint: Date?
 )

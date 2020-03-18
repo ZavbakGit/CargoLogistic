@@ -5,10 +5,7 @@ import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.Constants
 import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.common.utils.toFormatISO
-import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
-import `fun`.gladkikh.cargologistic.domain.entity.BarcodeEntity
-import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
-import `fun`.gladkikh.cargologistic.domain.entity.UnitEntity
+import `fun`.gladkikh.cargologistic.domain.entity.*
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -107,6 +104,48 @@ class AccountRepositoryImpl(
                     return@flatMap Either.Left(Failure(e.toString()))
                 }
             }
+    }
+
+
+    override fun printLabel1(printLabelEntity: PrintLabelEntity): Either<Failure, PrintLabelEntity> {
+        var data: printLabelRqData? = null
+
+        return preferences.getAccountEntity()
+            .flatMap {
+                try {
+                    data = printLabelRqData(
+                        command = "print_lable",
+                        barcode = printLabelEntity.barcodeRead,
+                        codeTSD = Constants.UID,
+                        guidUser = it.guid!!,
+                        count = printLabelEntity.countLabel,
+                        guidProduct = printLabelEntity.product.guid,
+                        dateCreate = printLabelEntity.dateCreate.toFormatISO(),
+                        guidPrinter = printLabelEntity.printer.guid
+                    )
+                    return@flatMap Either.Right(data)
+                } catch (e: Exception) {
+                    return@flatMap Either.Left(Failure(e.toString()))
+                }
+            }
+            .flatMap {
+                preferences.getSettings()
+            }
+            .flatMap { settings ->
+                try {
+                    App.requestRemote!!.request(gson.toJson(data))
+                        .map {
+                            val response = gson.fromJson(it, printLabelRsData::class.java)
+                            return@map printLabelEntity.copy(datePrint = response.date)
+                        }
+                } catch (e: Exception) {
+                    return@flatMap Either.Left(Failure(e.toString()))
+                }
+            }
+            .onNext {
+                dataBaseRequest.savePrintLabel(it)
+            }
+
     }
 
     override fun printLabel(
