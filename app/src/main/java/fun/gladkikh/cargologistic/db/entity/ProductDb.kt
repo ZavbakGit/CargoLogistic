@@ -20,9 +20,8 @@ data class ProductDb(
     )]
 )
 data class UnitDb(
-    @PrimaryKey val guid: String,
+    @PrimaryKey val code: String,
     @ColumnInfo(index = true) var guidProduct: String,
-    val code: String,
     val name: String,
     val coeff: Float,
     val current: Boolean
@@ -38,9 +37,8 @@ data class UnitDb(
     )]
 )
 data class BarcodeDb(
-    @PrimaryKey val guid: String,
-    @ColumnInfo(index = true) var guidProduct: String,
-    val barcode: String
+    @PrimaryKey val barcode: String,
+    @ColumnInfo(index = true) var guidProduct: String
 )
 
 

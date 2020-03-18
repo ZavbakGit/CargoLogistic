@@ -7,7 +7,7 @@ import `fun`.gladkikh.cargologistic.common.type.Progress
 import `fun`.gladkikh.cargologistic.common.utils.getDateYMD
 import `fun`.gladkikh.cargologistic.db.createGuid
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
-import `fun`.gladkikh.cargologistic.domain.entity.Barcode
+import `fun`.gladkikh.cargologistic.domain.entity.BarcodeEntity
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.GetAccountUseCase
@@ -51,7 +51,7 @@ class PrintFragmentViewModel @Inject constructor(
                 productEntity = ProductEntity(
                     guid = "111",
                     name = "Помидоры в томатном соусе",
-                    listBarcode = listOf(Barcode(createGuid(),"77785656546")),
+                    listBarcode = listOf(BarcodeEntity("77785656546")),
                     listUnit = listOf()
                 )
 

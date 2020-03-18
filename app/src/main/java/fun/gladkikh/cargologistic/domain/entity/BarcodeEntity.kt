@@ -1,6 +1,5 @@
 package `fun`.gladkikh.cargologistic.domain.entity
 
-data class Barcode(
-    val guid: String,
+data class BarcodeEntity(
     val barcode: String
 )

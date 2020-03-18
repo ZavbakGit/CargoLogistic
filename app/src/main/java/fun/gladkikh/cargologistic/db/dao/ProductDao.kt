@@ -47,9 +47,6 @@ interface ProductDao {
     @Delete
     fun delete(entity: UnitDb)
 
-    @Query("SELECT * FROM unit WHERE guid = :guid")
-    fun getUnitByGuid(guid:String):UnitDb?
-
     @Query("SELECT * FROM unit")
     fun getUnitList():List<UnitDb>
 
@@ -73,8 +70,8 @@ interface ProductDao {
     @Delete
     fun delete(entity: BarcodeDb)
 
-    @Query("SELECT * FROM barcode WHERE guid = :guid")
-    fun getBarcodeByGuid(guid:String):BarcodeDb?
+    @Query("SELECT * FROM barcode WHERE barcode = :barcode")
+    fun getBarcode(barcode:String):BarcodeDb?
 
     @Query("SELECT * FROM barcode")
     fun getBarcodeList():List<BarcodeDb>
