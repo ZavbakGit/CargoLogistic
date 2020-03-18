@@ -5,19 +5,18 @@ import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.Constants
 import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.common.utils.toFormatISO
-import `fun`.gladkikh.cargologistic.db.createGuid
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.BarcodeEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.entity.UnitEntity
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
-
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class AccountRepositoryImpl(
     private val preferences: PreferencesRequest,
+    private val dataBaseRequest: DataBaseRequest,
     private val gson: Gson
 ) : AccountRepository {
 
@@ -27,7 +26,9 @@ class AccountRepositoryImpl(
     }
 
     override fun saveAccountEntity(account: AccountEntity): Either<Failure, None> {
-        return preferences.saveAccountEntity(account)
+        return dataBaseRequest.removeAll().flatMap {
+            preferences.saveAccountEntity(account)
+        }
     }
 
     override fun testRemoteRequest(): Either<Failure, String> {
@@ -45,6 +46,12 @@ class AccountRepositoryImpl(
 
         var data: GetProductByBarcodeRqData? = null
 
+        val resultDb = dataBaseRequest.getProductByBarcode(barcode)
+
+        if (resultDb.isRight) {
+            return resultDb
+        }
+
         return preferences.getAccountEntity()
             .flatMap {
                 try {
@@ -60,6 +67,7 @@ class AccountRepositoryImpl(
                 }
             }.flatMap {
                 preferences.getSettings()
+
             }.flatMap { settings ->
                 try {
                     App.requestRemote!!.request(gson.toJson(data))
@@ -68,7 +76,9 @@ class AccountRepositoryImpl(
 
                             return@map ProductEntity(
                                 guid = response.guidProduct!!,
-                                listBarcode = listOf(BarcodeEntity(response.barcode)),
+                                listBarcode = response.barcodes.map { barcode ->
+                                    BarcodeEntity(barcode.barcode)
+                                },
                                 name = response.name,
                                 listUnit = response.listUnit
                             )
@@ -76,6 +86,9 @@ class AccountRepositoryImpl(
                 } catch (e: Exception) {
                     return@flatMap Either.Left(Failure(e.toString()))
                 }
+            }.onNext {
+                dataBaseRequest.saveProduct(it)
+
             }
 
 
@@ -175,11 +188,12 @@ class AccountRepositoryImpl(
         @SerializedName("guid_product")
         val guidProduct: String?,
         val name: String,
-        val barcode: String,
+        val barcodes: List<Barcode>,
         @SerializedName("units")
         val listUnit: List<UnitEntity>
     )
 
+    private data class Barcode(val barcode: String)
     private data class LoginDataRq(val command: String, val password: String)
     private data class TestRemoteRequestDataRq(val command: String)
 

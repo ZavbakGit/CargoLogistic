@@ -27,6 +27,9 @@ interface ProductDao {
     @Query("SELECT * FROM product WHERE guid = :guid")
     fun getProductByGuid(guid:String):ProductDb?
 
+    @Query("SELECT * FROM product WHERE guid IN (SELECT guidProduct FROM barcode WHERE barcode.barcode = :barcode)")
+    fun getProductByBarcode(barcode:String):ProductDb?
+
     @Query("SELECT * FROM product")
     fun getProductList():List<ProductDb>
 
@@ -78,4 +81,7 @@ interface ProductDao {
 
     @Query("SELECT * FROM barcode WHERE guidProduct = :guidBarcode")
     fun getBarcodeListByProduct(guidBarcode:String):List<BarcodeDb>
+
+    @Query("DELETE FROM product")
+    fun deleteAllProduct()
 }

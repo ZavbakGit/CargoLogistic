@@ -1,6 +1,7 @@
 package `fun`.gladkikh.cargologistic.di
 
 import `fun`.gladkikh.cargologistic.data.AccountRepositoryImpl
+import `fun`.gladkikh.cargologistic.data.DataBaseRequest
 import `fun`.gladkikh.cargologistic.data.PreferencesRequest
 import `fun`.gladkikh.cargologistic.data.SettingsRepositoryImpl
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
@@ -22,9 +23,9 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideAccountRepository(preferences: PreferencesRequest,
-                                 gson: Gson
+                                 gson: Gson,dataBaseRequest: DataBaseRequest
     ): AccountRepository {
-        return AccountRepositoryImpl(preferences,gson)
+        return AccountRepositoryImpl(preferences = preferences,gson = gson,dataBaseRequest = dataBaseRequest)
     }
 
 }

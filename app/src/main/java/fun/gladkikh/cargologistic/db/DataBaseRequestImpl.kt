@@ -1,21 +1,32 @@
 package `fun`.gladkikh.cargologistic.db
 
-import `fun`.gladkikh.cargologistic.common.type.Either
-import `fun`.gladkikh.cargologistic.common.type.Failure
-import `fun`.gladkikh.cargologistic.common.type.None
+import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.data.DataBaseRequest
 import `fun`.gladkikh.cargologistic.db.dao.ProductDao
+import `fun`.gladkikh.cargologistic.db.entity.ProductDb
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.mapper.transform
 import android.content.Context
 
 class DataBaseRequestImpl(
-    val productDao: ProductDao
+    private val productDao: ProductDao
 ) : DataBaseRequest {
 
     override fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        try {
+            val productDb =
+                productDao.getProductByBarcode(barcode) ?: return Either.Left(NotFoundInDB())
+
+            val listBarcode = productDao.getBarcodeListByProduct(productDb.guid)
+            val listUnit = productDao.getUnitListByProduct(productDb.guid)
+
+            return Either.Right(productDb.transform(listUnit, listBarcode))
+
+        } catch (e: Exception) {
+            return Either.Left(FailureInDB())
+        }
     }
+
 
     override fun saveProduct(productEntity: ProductEntity): Either<Failure, None> {
         try {
@@ -36,12 +47,17 @@ class DataBaseRequestImpl(
             return Either.Right(None())
 
         } catch (e: Exception) {
-            return Either.Left(Failure("Ошибка сохранения продукта!"))
+            return Either.Left(FailureInDB())
         }
     }
 
     override fun removeAll(): Either<Failure, None> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return try {
+            productDao.deleteAllProduct()
+            Either.Right(None())
+        } catch (e: Exception) {
+            Either.Left(FailureInDB())
+        }
     }
 
 }

@@ -7,6 +7,9 @@ open class NetworkConnectionFailure : Failure("Ошибка соеденения
 open class ErrorDescriptionFailure(val errorDescriptionEntity: ErrorDescriptionEntity)
     :Failure("Ошибка сервера")
 
+open class NotFoundInDB : Failure("Не найдено в базе данных")
+open class FailureInDB : Failure("Ошибка БД")
+
 open class SettingsFailure:Failure("Ошибка заполнения настроек!")
 open class AccountFailure:Failure("Ошибка чтения аккаута")
 

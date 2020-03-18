@@ -71,7 +71,6 @@ class ProductDaoTest {
         val listUnit = listProduct.map { product ->
             product to (0..3).map {
                 UnitDb(
-                    guid = createGuid(),
                     name = "unit $it",
                     code = "it",
                     coeff = it.toFloat(),

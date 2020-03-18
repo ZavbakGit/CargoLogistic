@@ -16,7 +16,7 @@ class LoginAccountUseCase @Inject constructor(
             return login(params)
         } else {
             return account.flatMap { accountEntity ->
-                if (accountEntity.password == params) {
+                if (accountEntity.password.equals(params)) {
                     return@flatMap Either.Right(accountEntity)
                 } else {
                     return@flatMap login(params)
@@ -36,9 +36,10 @@ class LoginAccountUseCase @Inject constructor(
         return accountRepository.saveAccountEntity(accountEntity)
             .flatMap {
                 accountRepository.login(password)
-            }.flatMap {
+            }.map {
+               return@map it.copy(password = password.trim())
+            }.onNext {
                 accountRepository.saveAccountEntity(it)
-                return@flatMap Either.Right(it)
             }.onNext {
                 App.initAccount(it)
             }
