@@ -20,7 +20,7 @@ class PrintFragmentViewModel @Inject constructor(
     private val testLong: TestLongUseCase,
     private val getAccountUseCase: GetAccountUseCase,
     private val getProductByBarcodeUseCase: GetProductByBarcodeUseCase,
-    private val printLabelUseCase1: PrintLabelUseCase1
+    private val printLabelUseCase: PrintLabelUseCase
 
     ) :
     BaseFragmentViewModel() {
@@ -31,12 +31,10 @@ class PrintFragmentViewModel @Inject constructor(
 
     //<editor-fold desc="PrintDialog">
     private val statePrintLabelDialog = MutableLiveData<StatePrintLabelDialog>()
-
     fun getStatePrintLabelDialog(): LiveData<StatePrintLabelDialog> = statePrintLabelDialog
     fun updateStatePrintLabelDialog(state: StatePrintLabelDialog) {
         this.statePrintLabelDialog.postValue(state)
     }
-
     fun openPintLabelDialog() {
         statePrintLabelDialog.postValue(
             StatePrintLabelDialog(
@@ -53,19 +51,10 @@ class PrintFragmentViewModel @Inject constructor(
             )
         )
     }
-
     fun resultPrintLabelDialog(state: StatePrintLabelDialog?) {
         if (state?.isPositiveEvent != null) {
             if (state.isPositiveEvent == true) {
-//                printLabel(
-//                    guidPrinter = listPrinter.value!!.find { it.current == true }!!.guid!!,
-//                    dateCreate = state.dateCreate!!,
-//                    barcode = state.barcode ?: "",
-//                    guidProduct = state.productEntity!!.guid,
-//                    count = state.count!!
-//                )
-
-                printLabel1(
+                printLabel(
                     PrintLabelEntity(
                         guid = createGuid(),
                         datePrint = null,
@@ -117,10 +106,10 @@ class PrintFragmentViewModel @Inject constructor(
     }
     //</editor-fold>
 
-    private fun printLabel1(
+    private fun printLabel(
         printLabelEntity: PrintLabelEntity
     ) {
-        printLabelUseCase1(printLabelEntity, viewModelScope) {
+        printLabelUseCase(printLabelEntity, viewModelScope) {
             updateProgress(Progress(false))
             it.either(::updateFailure, ::handlePrintLabel1)
         }

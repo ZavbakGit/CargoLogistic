@@ -107,7 +107,7 @@ class AccountRepositoryImpl(
     }
 
 
-    override fun printLabel1(printLabelEntity: PrintLabelEntity): Either<Failure, PrintLabelEntity> {
+    override fun printLabel(printLabelEntity: PrintLabelEntity): Either<Failure, PrintLabelEntity> {
         var data: printLabelRqData? = null
 
         return preferences.getAccountEntity()

@@ -16,5 +16,5 @@ interface AccountRepository {
     fun testRemoteRequest(): Either<Failure, String>
 
     fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity>
-    fun printLabel1(printLabelEntity: PrintLabelEntity): Either<Failure, PrintLabelEntity>
+    fun printLabel(printLabelEntity: PrintLabelEntity): Either<Failure, PrintLabelEntity>
 }
