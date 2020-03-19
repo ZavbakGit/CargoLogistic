@@ -2,6 +2,7 @@ package `fun`.gladkikh.cargologistic.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "product")
@@ -12,11 +13,11 @@ data class ProductDb(
 
 @Entity(
     tableName = "unit",
-    foreignKeys = [androidx.room.ForeignKey(
+    foreignKeys = [ForeignKey(
         entity = ProductDb::class,
-        parentColumns = kotlin.arrayOf("guid"),
-        childColumns = kotlin.arrayOf("guidProduct"),
-        onDelete = androidx.room.ForeignKey.CASCADE
+        parentColumns = arrayOf("guid"),
+        childColumns = arrayOf("guidProduct"),
+        onDelete = ForeignKey.CASCADE
     )]
 )
 data class UnitDb(
@@ -29,11 +30,11 @@ data class UnitDb(
 
 @Entity(
     tableName = "barcode",
-    foreignKeys = [androidx.room.ForeignKey(
+    foreignKeys = [ForeignKey(
         entity = ProductDb::class,
-        parentColumns = kotlin.arrayOf("guid"),
-        childColumns = kotlin.arrayOf("guidProduct"),
-        onDelete = androidx.room.ForeignKey.CASCADE
+        parentColumns = arrayOf("guid"),
+        childColumns = arrayOf("guidProduct"),
+        onDelete = ForeignKey.CASCADE
     )]
 )
 data class BarcodeDb(

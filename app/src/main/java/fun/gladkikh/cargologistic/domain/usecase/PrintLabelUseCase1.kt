@@ -17,6 +17,4 @@ class PrintLabelUseCase1 @Inject constructor(
     override suspend fun run(params: PrintLabelEntity): Either<Failure, PrintLabelEntity> {
         return accountRepository.printLabel1(params)
     }
-
-
 }
