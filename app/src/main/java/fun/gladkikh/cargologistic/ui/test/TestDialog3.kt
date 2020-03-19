@@ -2,13 +2,13 @@ package `fun`.gladkikh.cargologistic.ui.test
 
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.R
-import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVM
+import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVVM
 import `fun`.gladkikh.cargologistic.presentation.test.TestFragmentViewModel
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 
-class TestDialog3 : DialogMVM<String, String>() {
+class TestDialog3 : DialogMVVM<String, String>() {
 
     private lateinit var viewModel: TestFragmentViewModel
 
@@ -18,14 +18,15 @@ class TestDialog3 : DialogMVM<String, String>() {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
         viewModel = viewModel {}
-        dialogViewModel = viewModel.testDialog2Contract
+        dialogViewModel = viewModel.testDialog3Contract
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Выберите принтер")
+            builder
+                .setTitle("Выберите принтер")
                 .setPositiveButton("Ok"){_,_ ->
                     sendResult("Ok")
                 }

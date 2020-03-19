@@ -2,7 +2,7 @@ package `fun`.gladkikh.cargologistic.presentation.test
 
 import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
 import `fun`.gladkikh.cargologistic.common.type.*
-import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVM
+import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVVM
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.ApplySettingsUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.GetProductByBarcodeUseCase
@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import java.util.*
+import java.util.logging.Handler
 import javax.inject.Inject
 
 class TestFragmentViewModel @Inject constructor(
@@ -27,7 +28,7 @@ class TestFragmentViewModel @Inject constructor(
     val showDialog = SingleLiveEvent<Boolean>()
     val showDialog3 = SingleLiveEvent<Boolean>()
 
-    val testDialog2Contract = object : DialogMVM.DialogViewModel<String,String>(){
+    val testDialog2Contract = object : DialogMVVM.DialogViewModel<String, String>() {
         init {
             setState("Диалог: ${Date()}")
         }
@@ -39,28 +40,35 @@ class TestFragmentViewModel @Inject constructor(
 
         override fun onResult(result: String) {
             super.onResult(result)
-            updateTextData(result )
-            //setState("Диалог: ${Date()}")
-            //closeDialog()
+            updateTextData(result)
             showDialog.postValue(false)
         }
     }
 
-    val testDialog3Contract = object : DialogMVM.DialogViewModel<String,String>(){
+    val testDialog3Contract = object : DialogMVVM.DialogViewModel<String, String>() {
         init {
             setState("Диалог: ${Date()}")
         }
 
         override fun onCancel() {
             super.onCancel()
-            updateTextData("Cancel1")
+            updateTextData("Cancel")
+            setState("Ни каких Cancel")
+            showDialog3.postValue(true)
         }
 
         override fun onResult(result: String) {
             super.onResult(result)
-            updateTextData(result )
+            updateTextData(result)
             setState("Диалог: ${Date()}")
-            showDialog3.postValue(false)
+            if (result.equals("No")) {
+                setState("Ни каких No")
+                showDialog3.postValue(true)
+            } else {
+                updateTextData("Молодец!")
+                showDialog3.postValue(false)
+            }
+
         }
     }
 
@@ -119,11 +127,11 @@ class TestFragmentViewModel @Inject constructor(
         }
     }
 
-    fun showDialog(){
+    fun showDialog() {
         showDialog.postValue(true)
     }
 
-    fun showDialog3(){
+    fun showDialog3() {
         showDialog3.postValue(true)
     }
 

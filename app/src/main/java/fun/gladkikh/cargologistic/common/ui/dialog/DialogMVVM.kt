@@ -7,8 +7,7 @@ import androidx.lifecycle.*
 import javax.inject.Inject
 
 
-abstract class DialogMVM<STATE, RESULT> : DialogFragment() {
-
+abstract class DialogMVVM<STATE, RESULT> : DialogFragment() {
 
     /**
      * Фабрику инжектим
@@ -18,6 +17,20 @@ abstract class DialogMVM<STATE, RESULT> : DialogFragment() {
 
     /**
      * Диалог dialogViewModel храним в основной ViewModel
+     *
+     * пример
+     *
+     *  private lateinit var viewModel: TestFragmentViewModel
+     *
+     *  в диалоге при создании диалога инициируем dialogViewModel
+     *
+     *  override fun onCreate(savedInstanceState: Bundle?) {
+     *   super.onCreate(savedInstanceState)
+     *   App.appComponent.inject(this)
+     *   viewModel = viewModel {}
+     *   dialogViewModel = viewModel.testDialog2Contract
+     *  }
+     *
      */
     protected var dialogViewModel: DialogViewModel<STATE, RESULT>? = null
 
@@ -26,13 +39,13 @@ abstract class DialogMVM<STATE, RESULT> : DialogFragment() {
         //Подписываемся на состояние
         dialogViewModel?.getStateLiveData()?.observe(this, Observer {
             refreshState(it)
-        })
+        }) ?: throw IllegalStateException("dialogViewModel cannot be null")
     }
 
     /**
      * Перересовываем состояние
      */
-    open fun refreshState(state: STATE){
+    open fun refreshState(state: STATE) {
 
     }
 

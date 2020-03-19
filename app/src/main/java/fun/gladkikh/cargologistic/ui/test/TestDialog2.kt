@@ -2,7 +2,7 @@ package `fun`.gladkikh.cargologistic.ui.test
 
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.R
-import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVM
+import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVVM
 import `fun`.gladkikh.cargologistic.presentation.test.TestFragmentViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.test_dialog.*
 
 
-class TestDialog2 : DialogMVM<String, String>() {
+class TestDialog2 : DialogMVVM<String, String>() {
 
     companion object{
         const val TAG = "TestDialog2"

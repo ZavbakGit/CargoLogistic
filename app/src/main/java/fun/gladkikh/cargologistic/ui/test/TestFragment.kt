@@ -6,6 +6,7 @@ import `fun`.gladkikh.cargologistic.common.ui.BaseFragment
 import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
 import `fun`.gladkikh.cargologistic.presentation.test.TestFragmentViewModel
 import android.os.Bundle
+import android.os.Handler
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.test_fragment.*
 
@@ -54,7 +55,13 @@ class TestFragment : BaseFragment() {
 
                 if (it == true){
                     if (!dialog3.isVisible){
-                        dialog3.show(activity!!.supportFragmentManager,"Test3")
+                        try {
+                            Handler().postDelayed( {
+                                dialog3.show(activity!!.supportFragmentManager,"Test3")
+                            },300)
+
+                        } catch (e: Exception) {
+                        }
                     }
                 }else{
                     if (dialog3.isVisible){
