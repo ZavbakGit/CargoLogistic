@@ -1,10 +1,8 @@
 package `fun`.gladkikh.cargologistic.presentation.test
 
 import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
-import `fun`.gladkikh.cargologistic.common.type.ErrorDescriptionFailure
-import `fun`.gladkikh.cargologistic.common.type.Failure
-import `fun`.gladkikh.cargologistic.common.type.None
-import `fun`.gladkikh.cargologistic.common.type.Progress
+import `fun`.gladkikh.cargologistic.common.type.*
+import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVM
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.ApplySettingsUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.GetProductByBarcodeUseCase
@@ -23,6 +21,47 @@ class TestFragmentViewModel @Inject constructor(
 
     init {
         applySetting()
+    }
+
+
+    val showDialog = SingleLiveEvent<Boolean>()
+    val showDialog3 = SingleLiveEvent<Boolean>()
+
+    val testDialog2Contract = object : DialogMVM.DialogViewModel<String,String>(){
+        init {
+            setState("Диалог: ${Date()}")
+        }
+
+        override fun onCancel() {
+            super.onCancel()
+            updateTextData("Cancel1")
+        }
+
+        override fun onResult(result: String) {
+            super.onResult(result)
+            updateTextData(result )
+            //setState("Диалог: ${Date()}")
+            //closeDialog()
+            showDialog.postValue(false)
+        }
+    }
+
+    val testDialog3Contract = object : DialogMVM.DialogViewModel<String,String>(){
+        init {
+            setState("Диалог: ${Date()}")
+        }
+
+        override fun onCancel() {
+            super.onCancel()
+            updateTextData("Cancel1")
+        }
+
+        override fun onResult(result: String) {
+            super.onResult(result)
+            updateTextData(result )
+            setState("Диалог: ${Date()}")
+            showDialog3.postValue(false)
+        }
     }
 
     private val textData = MutableLiveData<String>()
@@ -80,6 +119,13 @@ class TestFragmentViewModel @Inject constructor(
         }
     }
 
+    fun showDialog(){
+        showDialog.postValue(true)
+    }
+
+    fun showDialog3(){
+        showDialog3.postValue(true)
+    }
 
 }
 

@@ -20,6 +20,8 @@ import `fun`.gladkikh.cargologistic.ui.print.PrinterDialogFragment
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsActivity
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsFragment
 import `fun`.gladkikh.cargologistic.ui.test.TestActivity
+import `fun`.gladkikh.cargologistic.ui.test.TestDialog2
+import `fun`.gladkikh.cargologistic.ui.test.TestDialog3
 import `fun`.gladkikh.cargologistic.ui.test.TestFragment
 import android.app.Application
 import android.content.Context
@@ -98,5 +100,7 @@ interface AppComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(testActivity: TestActivity)
     fun inject(testFragment: TestFragment)
+    fun inject(testDialog2: TestDialog2)
+    fun inject(testDialog3: TestDialog3)
 
 }

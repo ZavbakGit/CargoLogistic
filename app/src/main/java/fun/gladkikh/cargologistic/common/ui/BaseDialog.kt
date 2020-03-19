@@ -17,8 +17,6 @@ abstract class BaseDialog :DialogFragment(){
     }
 
 
-
-
     override fun onResume() {
         super.onResume()
         dialog?.window?.setLayout(

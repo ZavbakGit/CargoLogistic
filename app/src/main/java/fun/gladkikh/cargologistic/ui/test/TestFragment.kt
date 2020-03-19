@@ -10,8 +10,11 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.test_fragment.*
 
 class TestFragment : BaseFragment() {
+
     override val layoutId = R.layout.test_fragment
     private lateinit var viewModel: TestFragmentViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
@@ -25,9 +28,43 @@ class TestFragment : BaseFragment() {
                     tvMessage.text = (it ?: "Пусто") + "*\n \n " + tvMessage.text.toString()
                 })
 
-        }
 
+            onEvent(showDialog,{
+                var dialog = (activity!!.supportFragmentManager.findFragmentByTag(TestDialog2.TAG) as? TestDialog2)
+                if (dialog == null){
+                    dialog = TestDialog2()
+                }
+
+                if (it == true){
+                    if (!dialog.isVisible){
+                        dialog.show(activity!!.supportFragmentManager,TestDialog2.TAG)
+                    }
+                }else{
+                    if (dialog.isVisible){
+                        dialog.dismiss()
+                    }
+                }
+            })
+
+            onEvent(showDialog3,{
+                var dialog3 = (activity!!.supportFragmentManager.findFragmentByTag("Test3") as? TestDialog3)
+                if (dialog3 == null){
+                    dialog3 = TestDialog3()
+                }
+
+                if (it == true){
+                    if (!dialog3.isVisible){
+                        dialog3.show(activity!!.supportFragmentManager,"Test3")
+                    }
+                }else{
+                    if (dialog3.isVisible){
+                        dialog3.dismiss()
+                    }
+                }
+            })
+        }
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -45,6 +82,15 @@ class TestFragment : BaseFragment() {
 
         btLongOperation.setOnClickListener {
             viewModel.executeLongOperation()
+        }
+
+        btTestDialog.setOnClickListener {
+            viewModel.showDialog()
+        }
+
+
+        btTestDialog3.setOnClickListener {
+            viewModel.showDialog3()
         }
     }
 }

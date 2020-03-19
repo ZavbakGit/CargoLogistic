@@ -62,6 +62,19 @@
                 android:layout_height="wrap_content"
                 android:text="Длинная операция" />
 
+            <Button
+                android:id="@+id/btTestDialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Тест Диалог" />
+
+
+            <Button
+                android:id="@+id/btTestDialog3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Тест Диалог 3" />
+
         </LinearLayout>
     </ScrollView>
 

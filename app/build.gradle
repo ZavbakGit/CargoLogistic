@@ -86,6 +86,7 @@ dependencies {
 
 
     implementation project(path: ':barcode')
+    implementation project(path: ':dialogviewmodel')
 
 
 }

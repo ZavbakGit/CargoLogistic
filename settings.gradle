@@ -1,2 +1,3 @@
 include ':app', ':barcode'
 rootProject.name='Cargo Logistic'
+include ':dialogviewmodel'
