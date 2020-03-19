@@ -20,7 +20,6 @@ class PrintFragmentViewModel @Inject constructor(
     private val testLong: TestLongUseCase,
     private val getAccountUseCase: GetAccountUseCase,
     private val getProductByBarcodeUseCase: GetProductByBarcodeUseCase,
-    private val printLabelUseCase: PrintLabelUseCase,
     private val printLabelUseCase1: PrintLabelUseCase1
 
     ) :
@@ -127,32 +126,9 @@ class PrintFragmentViewModel @Inject constructor(
         }
     }
 
-    private fun printLabel(
-        guidProduct: String,
-        dateCreate: Date,
-        barcode: String,
-        count: Int,
-        guidPrinter: String
-    ) {
-        updateProgress(Progress(true, "Печатаем этикетку!"))
 
-        val param = PrintLabelUseCase.Params(
-            guidProduct = guidProduct,
-            dataCreate = dateCreate,
-            barcode = barcode,
-            count = count,
-            guidPrinter = guidPrinter
-        )
 
-        printLabelUseCase(param, viewModelScope) {
-            updateProgress(Progress(false))
-            it.either(::updateFailure, ::handlePrintLabel)
-        }
-    }
 
-    private fun handlePrintLabel(date: Date) {
-        updateMessage(Message(date.toString()))
-    }
 
     private fun handlePrintLabel1(printLabelEntity: PrintLabelEntity) {
         updateMessage(Message(printLabelEntity.toString()))

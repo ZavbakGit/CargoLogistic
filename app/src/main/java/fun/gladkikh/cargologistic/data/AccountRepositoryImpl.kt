@@ -148,50 +148,6 @@ class AccountRepositoryImpl(
 
     }
 
-    override fun printLabel(
-        guidPrinter: String,
-        guidProduct: String,
-        barcode: String?,
-        dataCreate: Date,
-        count: Int
-    ): Either<Failure, Date> {
-
-        var data: printLabelRqData? = null
-
-        return preferences.getAccountEntity()
-            .flatMap {
-                try {
-                    data = printLabelRqData(
-                        command = "print_lable",
-                        barcode = barcode,
-                        codeTSD = Constants.UID,
-                        guidUser = it.guid!!,
-                        count = count,
-                        guidProduct = guidProduct,
-                        dateCreate = dataCreate.toFormatISO(),
-                        guidPrinter = guidPrinter
-                    )
-                    return@flatMap Either.Right(data)
-                } catch (e: Exception) {
-                    return@flatMap Either.Left(Failure(e.toString()))
-                }
-            }.flatMap {
-                preferences.getSettings()
-            }.flatMap { settings ->
-                try {
-                    App.requestRemote!!.request(gson.toJson(data))
-                        .map {
-                            val response = gson.fromJson(it, printLabelRsData::class.java)
-                            return@map response.date
-                        }
-                } catch (e: Exception) {
-                    return@flatMap Either.Left(Failure(e.toString()))
-                }
-            }
-
-    }
-
-
     private class printLabelRqData(
         val command: String,
         @SerializedName("code_tsd")

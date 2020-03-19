@@ -8,7 +8,6 @@ import `fun`.gladkikh.cargologistic.common.type.Progress
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.domain.usecase.ApplySettingsUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.GetProductByBarcodeUseCase
-import `fun`.gladkikh.cargologistic.domain.usecase.PrintLabelUseCase
 import `fun`.gladkikh.cargologistic.domain.usecase.TestLongUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +18,6 @@ import javax.inject.Inject
 class TestFragmentViewModel @Inject constructor(
     private val getProductByGuidUseCase: GetProductByBarcodeUseCase,
     private val applySettingsUseCase: ApplySettingsUseCase,
-    private val printLabelUseCase: PrintLabelUseCase,
     private val longUseCase: TestLongUseCase
 ) : BaseFragmentViewModel() {
 
@@ -42,20 +40,7 @@ class TestFragmentViewModel @Inject constructor(
     }
 
     fun printLabel() {
-        updateProgress(Progress(true, "Получаем данные!"))
-        val param = PrintLabelUseCase.Params(
-            guidProduct = "cbcf493f-55bc-11d9-848a-00112f43529a",
-            dataCreate = Date(),
-            barcode = "2222",
-            count = 2,
-            guidPrinter = "833d2000-4ecc-11ea-98bc-902b34ac9554"
-        )
 
-
-        printLabelUseCase(param, viewModelScope) {
-            updateProgress(Progress(false))
-            it.either(::handleTextError, ::handlePrintLabel)
-        }
     }
 
     private fun handlePrintLabel(date: Date) {
