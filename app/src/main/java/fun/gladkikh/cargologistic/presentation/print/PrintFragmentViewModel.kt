@@ -1,5 +1,6 @@
 package `fun`.gladkikh.cargologistic.presentation.print
 
+import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
 import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.None
@@ -20,32 +21,53 @@ import javax.inject.Inject
 
 class PrintFragmentViewModel @Inject constructor(
     private val testLong: TestLongUseCase,
-    private val getAccountUseCase: GetAccountUseCase,
     private val getProductByBarcodeUseCase: GetProductByBarcodeUseCase,
     private val printLabelUseCase: PrintLabelUseCase
 
-    ) :
-    BaseFragmentViewModel() {
+    ) : BaseFragmentViewModel() {
 
-    init {
-        initAccount()
-    }
-
+    private val listPrinter = MutableLiveData<List<PrinterEntity>>()
     private val showChoicePrinterDialog = SingleLiveEvent<Boolean>()
+    private val showPrintLabelDialog1 = SingleLiveEvent<Boolean>()
+
     fun getShowChoicePrinterDialog():LiveData<Boolean> = showChoicePrinterDialog
+    fun getShowPrintLabelDialog1():LiveData<Boolean> = showPrintLabelDialog1
+
     val choicePrinterDialogViewModel
             = object : DialogMVVM.DialogViewModel<List<PrinterEntity>, PrinterEntity>() {
 
         override fun onResult(result: PrinterEntity) {
             super.onResult(result)
+            printLabelDialogViewModel.setState(printLabelDialogViewModel.getStateLiveData().value!!.copy(currentPrinter = result))
             showChoicePrinterDialog.postValue(false)
         }
     }
 
+    val printLabelDialogViewModel
+            = object : DialogMVVM.DialogViewModel<StatePrintLabelDialog1, StatePrintLabelDialog1>() {
+    }
+
+
+
+
+    private val statePrintLabelDialog = MutableLiveData<StatePrintLabelDialog>()
+    private val statePrinterDialog = MutableLiveData<StatePrinterDialog>()
+
+    init {
+        initAccount()
+    }
+
+    private fun initAccount() {
+        updateListPrinter(App.accountEntity!!.settings!!.listPrinter)
+    }
+
+
+
+
 
 
     //<editor-fold desc="PrintDialog">
-    private val statePrintLabelDialog = MutableLiveData<StatePrintLabelDialog>()
+
     fun getStatePrintLabelDialog(): LiveData<StatePrintLabelDialog> = statePrintLabelDialog
     fun updateStatePrintLabelDialog(state: StatePrintLabelDialog) {
         this.statePrintLabelDialog.postValue(state)
@@ -88,8 +110,8 @@ class PrintFragmentViewModel @Inject constructor(
     //</editor-fold>
 
     //<editor-fold desc="PrinterDialog">
-    private val statePrinterDialog = MutableLiveData<StatePrinterDialog>()
-    private val listPrinter = MutableLiveData<List<PrinterEntity>>()
+
+
     fun getListPrinter(): LiveData<List<PrinterEntity>> = listPrinter
     fun updateListPrinter(listPrinter: List<PrinterEntity>?) {
         this.listPrinter.postValue(listPrinter)
@@ -144,17 +166,11 @@ class PrintFragmentViewModel @Inject constructor(
         openPintLabelDialog()
     }
 
-    private fun initAccount() {
-        updateProgress(Progress(true, "Получаем данные Акаунта!"))
-        getAccountUseCase(None(), viewModelScope) {
-            updateProgress(Progress(false))
-            it.either(::updateFailure, ::handleInitAccount)
-        }
-    }
 
-    private fun handleInitAccount(accountEntity: AccountEntity) {
-        updateListPrinter(accountEntity.settings?.listPrinter)
-    }
+
+//    private fun handleInitAccount(accountEntity: AccountEntity) {
+//        updateListPrinter(accountEntity.settings?.listPrinter)
+//    }
 
     private fun handleGetProductByBarcode(
         productEntity: ProductEntity,

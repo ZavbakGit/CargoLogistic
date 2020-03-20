@@ -46,8 +46,9 @@ class PrintFragment : BaseFragment() {
                 dialog.show(activity!!.supportFragmentManager, ChoicePrinterDialogFragment.TAG)
             }
         } else {
-            if (dialog.isVisible) {
+            try {
                 dialog.dismiss()
+            } catch (e: Exception) {
             }
         }
     }
