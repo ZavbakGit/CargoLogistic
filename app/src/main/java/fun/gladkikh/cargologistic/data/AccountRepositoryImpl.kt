@@ -17,7 +17,6 @@ class AccountRepositoryImpl(
     private val gson: Gson
 ) : AccountRepository {
 
-
     override fun getAccountEntity(): Either<Failure, AccountEntity> {
         return preferences.getAccountEntity()
     }
@@ -30,82 +29,66 @@ class AccountRepositoryImpl(
 
     override fun testRemoteRequest(): Either<Failure, String> {
         val data = TestRemoteRequestDataRq("test")
-        return preferences.getSettings().flatMap {
-            try {
-                App.requestRemote!!.request(gson.toJson(data))
-            } catch (e: Exception) {
-                return@flatMap Either.Left(Failure(e.toString()))
-            }
+
+        return try {
+            App.requestRemote!!.request(gson.toJson(data))
+        } catch (e: Exception) {
+            Either.Left(Failure(e.toString()))
         }
     }
 
     override fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity> {
-
-        var data: GetProductByBarcodeRqData? = null
-
         val resultDb = dataBaseRequest.getProductByBarcode(barcode)
 
         if (resultDb.isRight) {
             return resultDb
         }
 
-        return preferences.getAccountEntity()
-            .flatMap {
-                try {
-                    data = GetProductByBarcodeRqData(
-                        command = "get_product",
-                        barcode = barcode,
-                        codeTSD = Constants.UID,
-                        guidUser = it.guid!!
-                    )
-                    return@flatMap Either.Right(data)
-                } catch (e: Exception) {
-                    return@flatMap Either.Left(Failure(e.toString()))
-                }
-            }.flatMap {
-                preferences.getSettings()
-
-            }.flatMap { settings ->
-                try {
-                    App.requestRemote!!.request(gson.toJson(data))
-                        .map {
-                            val response = gson.fromJson(it, GetProductByBarcodeRsData::class.java)
-
-                            return@map ProductEntity(
-                                guid = response.guidProduct!!,
-                                listBarcode = response.barcodes.map { barcode ->
-                                    BarcodeEntity(barcode.barcode)
-                                },
-                                name = response.name,
-                                listUnit = response.listUnit
-                            )
-                        }
-                } catch (e: Exception) {
-                    return@flatMap Either.Left(Failure(e.toString()))
-                }
-            }.onNext {
-                dataBaseRequest.saveProduct(it)
-
+        try {
+            if (App.accountEntity?.guid == null) {
+                return Either.Left(AccountFailure())
             }
 
+            val data = GetProductByBarcodeRqData(
+                command = "get_product",
+                barcode = barcode,
+                codeTSD = Constants.UID,
+                guidUser = App.accountEntity!!.guid!!
+            )
 
+            return App.requestRemote!!.request(gson.toJson(data))
+                .map {
+                    val response = gson.fromJson(it, GetProductByBarcodeRsData::class.java)
+
+                    return@map ProductEntity(
+                        guid = response.guidProduct!!,
+                        listBarcode = response.barcodes.map { barcode ->
+                            BarcodeEntity(barcode.barcode)
+                        },
+                        name = response.name,
+                        listUnit = response.listUnit
+                    )
+                }.onNext {
+                    dataBaseRequest.saveProduct(it)
+                }
+
+        } catch (e: Exception) {
+            return Either.Left(Failure(e.toString()))
+        }
     }
 
     override fun login(password: String): Either<Failure, AccountEntity> {
-        val data = LoginDataRq("login", password)
-        return preferences.getSettings()
-            .flatMap { settings ->
-                try {
-                    App.requestRemote!!.request(gson.toJson(data))
-                        .map {
-                            gson.fromJson(it, AccountEntity::class.java)
-                        }
-                } catch (e: Exception) {
-                    return@flatMap Either.Left(Failure(e.toString()))
+        return try {
+            val data = gson.toJson(LoginDataRq("login", password))
+            App.requestRemote!!.request(data)
+                .map {
+                    gson.fromJson(it, AccountEntity::class.java)
                 }
-            }
-    }
 
+        } catch (e: Exception) {
+            Either.Left(Failure(e.toString()))
+        }
+    }
 
     override fun printLabel(printLabelEntity: PrintLabelEntity): Either<Failure, PrintLabelEntity> {
         var data: printLabelRqData? = null
@@ -147,6 +130,7 @@ class AccountRepositoryImpl(
             }
 
     }
+
 
     private class printLabelRqData(
         val command: String,

@@ -43,18 +43,21 @@ fun <T : ResponseEntity> Response<T>.isSucceed(): Boolean {
 }
 
 fun <T : ResponseEntity> Response<T>.parseError(): Failure {
-    val message = (body() as ResponseEntity).error
-    val builder = GsonBuilder()
-    val gson = builder.create()
-    val error = gson.fromJson(message, ErrorDescriptionEntity::class.java)
-    return ErrorDescriptionFailure(
-        ErrorDescriptionEntity(
-            code = error.code,
-            description = error.description,
-            extra = error.extra
+    try {
+        val message = (body() as ResponseEntity).error
+        val builder = GsonBuilder()
+        val gson = builder.create()
+        val error = gson.fromJson(message, ErrorDescriptionEntity::class.java)
+        return ErrorDescriptionFailure(
+            ErrorDescriptionEntity(
+                code = error.code,
+                description = error.description,
+                extra = error.extra
+            )
         )
-    )
-
+    } catch (e: Exception) {
+        return Failure(this.toString())
+    }
 }
 
 

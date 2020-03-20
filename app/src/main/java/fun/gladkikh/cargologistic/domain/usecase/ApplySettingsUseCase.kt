@@ -14,9 +14,6 @@ class ApplySettingsUseCase @Inject constructor(
     override suspend fun run(params: None): Either<Failure, None> {
         return settingsRepository.getSettings().flatMap {
             try {
-                if (it.host.isNullOrBlank()){
-                    return@flatMap Either.Left(Failure("Не заполнен host"))
-                }
                 App.initRequestRemote(it)
                 return@flatMap Either.Right(None())
             } catch (e: Exception) {

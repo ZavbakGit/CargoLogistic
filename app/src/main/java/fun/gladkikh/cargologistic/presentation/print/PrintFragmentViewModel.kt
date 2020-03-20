@@ -4,6 +4,8 @@ import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
 import `fun`.gladkikh.cargologistic.common.type.Message
 import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.common.type.Progress
+import `fun`.gladkikh.cargologistic.common.type.SingleLiveEvent
+import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVVM
 import `fun`.gladkikh.cargologistic.common.utils.getDateYMD
 import `fun`.gladkikh.cargologistic.db.createGuid
 import `fun`.gladkikh.cargologistic.domain.entity.*
@@ -28,6 +30,19 @@ class PrintFragmentViewModel @Inject constructor(
     init {
         initAccount()
     }
+
+    private val showChoicePrinterDialog = SingleLiveEvent<Boolean>()
+    fun getShowChoicePrinterDialog():LiveData<Boolean> = showChoicePrinterDialog
+    val choicePrinterDialogViewModel
+            = object : DialogMVVM.DialogViewModel<List<PrinterEntity>, PrinterEntity>() {
+
+        override fun onResult(result: PrinterEntity) {
+            super.onResult(result)
+            showChoicePrinterDialog.postValue(false)
+        }
+    }
+
+
 
     //<editor-fold desc="PrintDialog">
     private val statePrintLabelDialog = MutableLiveData<StatePrintLabelDialog>()
@@ -86,13 +101,15 @@ class PrintFragmentViewModel @Inject constructor(
     }
 
     fun openPinterDialog() {
-        statePrinterDialog.postValue(
-            StatePrinterDialog(
-                isOpen = true,
-                isPositiveEvent = null,
-                listPrinter = listPrinter.value
-            )
-        )
+        showChoicePrinterDialog.postValue(true)
+
+//        statePrinterDialog.postValue(
+//            StatePrinterDialog(
+//                isOpen = true,
+//                isPositiveEvent = null,
+//                listPrinter = listPrinter.value
+//            )
+//        )
     }
 
     fun resultPrinterDialog(state: StatePrinterDialog?) {

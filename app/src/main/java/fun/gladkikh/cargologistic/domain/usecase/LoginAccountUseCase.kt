@@ -1,4 +1,5 @@
 package `fun`.gladkikh.cargologistic.domain.usecase
+
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.common.interactor.UseCase
 import `fun`.gladkikh.cargologistic.common.type.*
@@ -10,19 +11,20 @@ class LoginAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) : UseCase<AccountEntity, String>() {
     override suspend fun run(params: String): Either<Failure, AccountEntity> {
-        val account = accountRepository.getAccountEntity()
 
-        if (account.isLeft) {
+        val account = App.accountEntity ?: return login(params)
+        //Если не записан то сразу login
+        if (account.guid == null) {
             return login(params)
-        } else {
-            return account.flatMap { accountEntity ->
-                if (accountEntity.password.equals(params)) {
-                    return@flatMap Either.Right(accountEntity)
-                } else {
-                    return@flatMap login(params)
-                }
-            }
         }
+
+        //Если пароль равен сохраненному то возвращаем его
+        return if (account.password.equals(params)) {
+            Either.Right(account)
+        } else {
+            login(params)
+        }
+
     }
 
     private fun login(password: String): Either<Failure, AccountEntity> {
@@ -37,7 +39,7 @@ class LoginAccountUseCase @Inject constructor(
             .flatMap {
                 accountRepository.login(password)
             }.map {
-               return@map it.copy(password = password.trim())
+                return@map it.copy(password = password.trim())
             }.onNext {
                 accountRepository.saveAccountEntity(it)
             }.onNext {

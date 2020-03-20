@@ -62,7 +62,7 @@ class LoginFragment : BaseFragment() {
         }
 
         btExit.setOnClickListener {
-            viewModel.unlogin()
+            viewModel.unLogin()
         }
 
 

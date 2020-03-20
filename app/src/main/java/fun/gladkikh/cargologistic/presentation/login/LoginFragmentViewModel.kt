@@ -28,45 +28,62 @@ class LoginFragmentViewModel @Inject constructor(
 
     private val currentAccountData = MutableLiveData<AccountEntity>()
     fun getCurrentAccountData(): LiveData<AccountEntity> = currentAccountData
-    fun updateCurrentAccountData(accountEntity: AccountEntity?) {
+    private fun updateCurrentAccountData(accountEntity: AccountEntity?) {
+        App.initAccount(accountEntity)
         currentAccountData.postValue(accountEntity)
+        if (App.accountEntity?.user != null){
+            updateCommand(OpenFormCommand(Constants.COMMAND_OPEN_MAIN))
+        }
     }
-
 
     init {
         applySetting()
         getCurrentAccount()
     }
 
-
-    private fun getCurrentAccount() {
-      getAccountUseCase(None(), viewModelScope) {
-            it.either(::handleErrorLogin, ::handleCurrentAccountViewModel)
-        }
-    }
-
+    /**
+     * Читаем и применяем настройки
+     */
     private fun applySetting() {
         applySettingsUseCase(None(), viewModelScope) { either ->
             either.either(::handleErrorViewModel) { }
         }
     }
 
+    /**
+     * Читаем и применяем Аккаунт
+     */
+    private fun getCurrentAccount() {
+      getAccountUseCase(None(), viewModelScope) {
+            it.either(::handleErrorGetCurrentAccount, ::handleGetCurrentAccount)
+        }
+    }
+
+    /**
+     * Логинемся
+     */
     fun login(password: String) {
         updateProgress(Progress(true, "Login..."))
         loginAccountUseCase(password, viewModelScope) {
-            it.either(::handleErrorLogin, ::handleCurrentAccountViewModel)
+            it.either(::handleErrorLogin, ::handleLogin)
             updateProgress(Progress(false))
         }
     }
 
-    fun unlogin() {
+    /**
+     * Разлогиневаемся
+     */
+    fun unLogin() {
         updateProgress(Progress(true, "Exit.."))
         removeAccountUseCase(None(), viewModelScope) {
-            it.either(::handleErrorViewModel, ::handleCurrentAccountViewModel)
+            it.either(::handleErrorViewModel, ::handleGetCurrentAccount)
             updateProgress(Progress(false))
         }
     }
 
+    /**
+     * Сохраняем тестовые настройки
+     */
     fun saveTestSettings() {
         val settings = SettingsEntity(
             login1C = "Админ",
@@ -87,6 +104,9 @@ class LoginFragmentViewModel @Inject constructor(
         App.initRequestRemote(settings)
     }
 
+    /**
+     * Тестируем подключение
+     */
     fun testRemote() {
         updateProgress(Progress(true, "Соеденяемся...!"))
         testRemoteRequestUseCase(None(), viewModelScope) { either ->
@@ -97,13 +117,15 @@ class LoginFragmentViewModel @Inject constructor(
         }
     }
 
-    private fun handleCurrentAccountViewModel(accountEntity: AccountEntity) {
+    private fun handleGetCurrentAccount(accountEntity: AccountEntity) {
         updateCurrentAccountData(accountEntity)
-        if (accountEntity.user != null){
-            updateCommand(OpenFormCommand(Constants.COMMAND_OPEN_MAIN))
-        }
     }
-
+    private fun handleErrorGetCurrentAccount(failure: Failure) {
+        updateCurrentAccountData(null)
+    }
+    private fun handleLogin(accountEntity: AccountEntity) {
+        updateCurrentAccountData(accountEntity)
+    }
     private fun handleErrorLogin(failure: Failure) {
         handleErrorViewModel(failure)
         updateCurrentAccountData(null)

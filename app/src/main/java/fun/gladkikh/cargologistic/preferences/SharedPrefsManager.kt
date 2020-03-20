@@ -67,7 +67,7 @@ class SharedPrefsManager @Inject constructor(
 
     fun getSettings(): Either<Failure, SettingsEntity> {
         try {
-            val host = prefs.getString(HOST, null)
+            val host = prefs.getString(HOST, "http://0.0.0.0/")
             val login1C = prefs.getString(LOGIN_1C, null)
             val password1C = prefs.getString(PASSWORD_1C, null)
             val pdt = prefs.getString(LIST_TSD, 1.toString())?.toIntOrNull()

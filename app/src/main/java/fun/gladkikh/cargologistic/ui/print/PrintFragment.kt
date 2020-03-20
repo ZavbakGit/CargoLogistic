@@ -24,10 +24,32 @@ class PrintFragment : BaseFragment() {
             onEvent(getFailureData(), ::handleFailure)
             onEvent(getProgressData(), ::handleProgress)
 
+            onEvent(getShowChoicePrinterDialog(), ::handleShowChoicePrinterDialog)
+
             onEvent(getStatePrintLabelDialog(), ::handleStatePrintLabelDialogViewModel)
-            onEvent(getStatePrinterDialog(),::handleStatePrinterDialogViewModel)
+
+            //onEvent(getStatePrinterDialog(), ::handleStatePrinterDialogViewModel)
         }
 
+    }
+
+    private fun handleShowChoicePrinterDialog(show: Boolean?) {
+        var dialog = activity!!.supportFragmentManager
+            .findFragmentByTag(ChoicePrinterDialogFragment.TAG) as? ChoicePrinterDialogFragment
+
+        if (dialog == null) {
+            dialog = ChoicePrinterDialogFragment()
+        }
+
+        if (show == true) {
+            if (!dialog.isVisible) {
+                dialog.show(activity!!.supportFragmentManager, ChoicePrinterDialogFragment.TAG)
+            }
+        } else {
+            if (dialog.isVisible) {
+                dialog.dismiss()
+            }
+        }
     }
 
     fun handleStatePrintLabelDialogViewModel(statePrintLabelDialog: StatePrintLabelDialog?) {
@@ -44,16 +66,16 @@ class PrintFragment : BaseFragment() {
     }
 
     fun handleStatePrinterDialogViewModel(statePrinterDialog: StatePrinterDialog?) {
-        if (statePrinterDialog?.isOpen == true) {
-            val dialog =
-                activity!!.supportFragmentManager.findFragmentByTag(PrinterDialogFragment.TAG)
-            if (dialog == null) {
-                PrinterDialogFragment().show(
-                    activity!!.supportFragmentManager,
-                    PrintLabelDialogFragment.TAG
-                )
-            }
-        }
+//        if (statePrinterDialog?.isOpen == true) {
+//            val dialog =
+//                activity!!.supportFragmentManager.findFragmentByTag(PrinterDialogFragment.TAG)
+//            if (dialog == null) {
+//                PrinterDialogFragment().show(
+//                    activity!!.supportFragmentManager,
+//                    PrintLabelDialogFragment.TAG
+//                )
+//            }
+//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -74,7 +96,6 @@ class PrintFragment : BaseFragment() {
         btOpenPrinterDialog.setOnClickListener {
             viewModel.openPinterDialog()
         }
-
 
 
     }

@@ -13,11 +13,6 @@ class GetAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) : UseCase<AccountEntity, None>() {
     override suspend fun run(params: None): Either<Failure, AccountEntity> {
-        val account = App.accountEntity
-        return if (account != null) {
-            Either.Right(account)
-        } else {
-            Either.Left(Failure("Не записан аккаунт"))
-        }
+        return accountRepository.getAccountEntity()
     }
 }

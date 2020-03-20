@@ -13,10 +13,7 @@ import `fun`.gladkikh.cargologistic.ui.login.LoginActivity
 import `fun`.gladkikh.cargologistic.ui.login.LoginFragment
 import `fun`.gladkikh.cargologistic.ui.main.MainActivity
 import `fun`.gladkikh.cargologistic.ui.main.MainFragment
-import `fun`.gladkikh.cargologistic.ui.print.PrintActivity
-import `fun`.gladkikh.cargologistic.ui.print.PrintFragment
-import `fun`.gladkikh.cargologistic.ui.print.PrintLabelDialogFragment
-import `fun`.gladkikh.cargologistic.ui.print.PrinterDialogFragment
+import `fun`.gladkikh.cargologistic.ui.print.*
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsActivity
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsFragment
 import `fun`.gladkikh.cargologistic.ui.test.TestActivity
@@ -53,13 +50,13 @@ class App : Application() {
             requestRemote = RequestRemoteImpl(
                 context = instance!!,
                 isDebug = Constants.IS_TEST_BUILD,
-                baseUrl = settingsEntity.host ?: "",
+                baseUrl = settingsEntity.host ?: "http://0.0.0.0/",
                 password = settingsEntity.password1C ?: "",
                 user = settingsEntity.login1C ?: ""
             )
         }
 
-        fun initAccount(accountEntity: AccountEntity) {
+        fun initAccount(accountEntity: AccountEntity?) {
             this.accountEntity = accountEntity
         }
     }
@@ -102,5 +99,6 @@ interface AppComponent {
     fun inject(testFragment: TestFragment)
     fun inject(testDialog2: TestDialog2)
     fun inject(testDialog3: TestDialog3)
+    fun inject(printerDialogFragment1: ChoicePrinterDialogFragment)
 
 }
