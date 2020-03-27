@@ -4,13 +4,13 @@ import `fun`.gladkikh.cargologistic.presentation.login.LoginActivityViewModel
 import `fun`.gladkikh.cargologistic.presentation.login.LoginFragmentViewModel
 import `fun`.gladkikh.cargologistic.presentation.main.MainActivityViewModel
 import `fun`.gladkikh.cargologistic.presentation.main.MainFragmentViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.PrintActivityViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
+import `fun`.gladkikh.cargologistic.presentation.printOld.PrintActivityViewModel
+import `fun`.gladkikh.cargologistic.presentation.printOld.PrintFragmentViewModelOld
+import `fun`.gladkikh.cargologistic.presentation.printlabel.PrintLabelFragmentViewModel
 import `fun`.gladkikh.cargologistic.presentation.setting.SettingActivityViewModel
 import `fun`.gladkikh.cargologistic.presentation.setting.SettingFragmentViewModel
 import `fun`.gladkikh.cargologistic.presentation.test.TestActivityViewModel
 import `fun`.gladkikh.cargologistic.presentation.test.TestFragmentViewModel
-import `fun`.gladkikh.cargologistic.ui.main.MainActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
@@ -30,8 +30,15 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(PrintFragmentViewModel::class)
-    abstract fun bindPrintLabelDialodViewModel(viewModel: PrintFragmentViewModel): ViewModel
+    @ViewModelKey(PrintFragmentViewModelOld::class)
+    abstract fun bindPrintLabelDialodViewModel(viewModel: PrintFragmentViewModelOld): ViewModel
+
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PrintLabelFragmentViewModel::class)
+    abstract fun bindPrintLabelActivityViewModel(viewModel: PrintLabelFragmentViewModel): ViewModel
 
 
     @Binds

@@ -1,4 +1,4 @@
-package `fun`.gladkikh.cargologistic.presentation.print
+package `fun`.gladkikh.cargologistic.presentation.printOld
 
 import `fun`.gladkikh.cargologistic.common.presentation.BaseActivityViewModel
 import `fun`.gladkikh.cargologistic.common.type.None

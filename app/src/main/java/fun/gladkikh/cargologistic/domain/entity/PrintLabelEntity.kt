@@ -9,5 +9,5 @@ data class PrintLabelEntity(
     val printer: PrinterEntity,
     val countLabel: Int,
     val dateCreate: Date,
-    val datePrint: Date?
+    val datePrint: Date? = null
 )

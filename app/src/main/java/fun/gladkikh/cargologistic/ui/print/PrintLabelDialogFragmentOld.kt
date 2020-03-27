@@ -8,8 +8,8 @@ import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
 import `fun`.gladkikh.cargologistic.common.utils.getDateDMY
 import `fun`.gladkikh.cargologistic.common.utils.toStringDMY
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
-import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
+import `fun`.gladkikh.cargologistic.presentation.printOld.PrintFragmentViewModelOld
+import `fun`.gladkikh.cargologistic.presentation.printOld.printdialog.StatePrintLabelDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
@@ -19,12 +19,12 @@ import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy
 import kotlinx.android.synthetic.main.print_dialog.*
 
 
-class PrintLabelDialogFragment : BaseDialog() {
+class PrintLabelDialogFragmentOld : BaseDialog() {
     companion object {
         const val TAG = "PrintLabelDialogFragment"
     }
 
-    private lateinit var viewModel: PrintFragmentViewModel
+    private lateinit var viewModel: PrintFragmentViewModelOld
     private val layoutId = R.layout.print_dialog
 
     override fun onCreateView(

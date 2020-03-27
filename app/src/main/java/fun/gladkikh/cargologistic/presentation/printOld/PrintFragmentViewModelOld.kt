@@ -1,4 +1,4 @@
-package `fun`.gladkikh.cargologistic.presentation.print
+package `fun`.gladkikh.cargologistic.presentation.printOld
 
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.common.presentation.BaseFragmentViewModel
@@ -11,15 +11,15 @@ import `fun`.gladkikh.cargologistic.common.utils.getDateYMD
 import `fun`.gladkikh.cargologistic.db.createGuid
 import `fun`.gladkikh.cargologistic.domain.entity.*
 import `fun`.gladkikh.cargologistic.domain.usecase.*
-import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
-import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.StatePrinterDialog
+import `fun`.gladkikh.cargologistic.presentation.printOld.printdialog.StatePrintLabelDialog
+import `fun`.gladkikh.cargologistic.presentation.printOld.printerdialog.StatePrinterDialogOld
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import java.util.*
 import javax.inject.Inject
 
-class PrintFragmentViewModel @Inject constructor(
+class PrintFragmentViewModelOld @Inject constructor(
     private val testLong: TestLongUseCase,
     private val getProductByBarcodeUseCase: GetProductByBarcodeUseCase,
     private val printLabelUseCase: PrintLabelUseCase
@@ -51,7 +51,7 @@ class PrintFragmentViewModel @Inject constructor(
 
 
     private val statePrintLabelDialog = MutableLiveData<StatePrintLabelDialog>()
-    private val statePrinterDialog = MutableLiveData<StatePrinterDialog>()
+    private val statePrinterDialog = MutableLiveData<StatePrinterDialogOld>()
 
     init {
         initAccount()
@@ -117,8 +117,8 @@ class PrintFragmentViewModel @Inject constructor(
         this.listPrinter.postValue(listPrinter)
     }
 
-    fun getStatePrinterDialog(): LiveData<StatePrinterDialog> = statePrinterDialog
-    fun updateStatePrinterDialog(state: StatePrinterDialog) {
+    fun getStatePrinterDialog(): LiveData<StatePrinterDialogOld> = statePrinterDialog
+    fun updateStatePrinterDialog(state: StatePrinterDialogOld) {
         this.statePrinterDialog.postValue(state)
     }
 
@@ -134,14 +134,14 @@ class PrintFragmentViewModel @Inject constructor(
 //        )
     }
 
-    fun resultPrinterDialog(state: StatePrinterDialog?) {
+    fun resultPrinterDialog(state: StatePrinterDialogOld?) {
         if (state?.isPositiveEvent != null) {
             if (state.isPositiveEvent == true) {
                 updateListPrinter(state.listPrinter)
             }
         }
 
-        updateStatePrinterDialog(StatePrinterDialog(isOpen = false))
+        updateStatePrinterDialog(StatePrinterDialogOld(isOpen = false))
     }
     //</editor-fold>
 

@@ -1,4 +1,4 @@
-package `fun`.gladkikh.cargologistic.ui.print
+package `fun`.gladkikh.cargologistic.ui.printlabel
 
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.R
@@ -6,7 +6,7 @@ import `fun`.gladkikh.cargologistic.common.type.SingleLiveEvent
 import `fun`.gladkikh.cargologistic.common.ui.BaseHostActivity
 import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
 import `fun`.gladkikh.cargologistic.domain.entity.SettingsEntity
-import `fun`.gladkikh.cargologistic.presentation.print.PrintActivityViewModel
+import `fun`.gladkikh.cargologistic.presentation.printOld.PrintActivityViewModel
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.LiveData

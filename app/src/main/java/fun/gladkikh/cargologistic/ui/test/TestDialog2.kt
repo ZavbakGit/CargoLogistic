@@ -40,8 +40,8 @@ class TestDialog2 : DialogMVVM<String, String>() {
 
 
 
-    override fun refreshState(state: String) {
-        tvMessage.text = state
+    override fun setStateState(state: String?) {
+        tvMessage.text = state?:""
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

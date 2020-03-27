@@ -30,7 +30,6 @@
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:text="TextView"
-            android:textAlignment="center"
             tools:text="65465456465465465456456" />
 
         <TextView

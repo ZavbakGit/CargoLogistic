@@ -4,17 +4,20 @@ import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.data.DataBaseRequest
 import `fun`.gladkikh.cargologistic.db.dao.PrintLabelDao
 import `fun`.gladkikh.cargologistic.db.dao.ProductDao
-import `fun`.gladkikh.cargologistic.db.entity.ProductDb
 import `fun`.gladkikh.cargologistic.domain.entity.PrintLabelEntity
-import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
 import `fun`.gladkikh.cargologistic.mapper.transform
-import android.content.Context
+import androidx.lifecycle.Transformations
+
 
 class DataBaseRequestImpl(
     private val productDao: ProductDao,
     private val printLabelDao: PrintLabelDao
 ) : DataBaseRequest {
+
+    override fun getListPrintLabel() = Transformations.map(printLabelDao.getPrintLabelList()) { list->
+        list.map { it.transform() }
+    }
 
     override fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity> {
         try {
@@ -30,7 +33,6 @@ class DataBaseRequestImpl(
             return Either.Left(FailureInDB())
         }
     }
-
 
     override fun saveProduct(productEntity: ProductEntity): Either<Failure, None> {
         try {

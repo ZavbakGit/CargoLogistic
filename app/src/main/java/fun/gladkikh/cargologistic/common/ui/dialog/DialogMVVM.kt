@@ -38,14 +38,14 @@ abstract class DialogMVVM<STATE, RESULT> : DialogFragment() {
         super.onActivityCreated(savedInstanceState)
         //Подписываемся на состояние
         dialogViewModel?.getStateLiveData()?.observe(this, Observer {
-            refreshState(it)
+            setStateState(it)
         }) ?: throw IllegalStateException("dialogViewModel cannot be null")
     }
 
     /**
      * Перересовываем состояние
      */
-    open fun refreshState(state: STATE) {
+    open fun setStateState(state: STATE?) {
 
     }
 

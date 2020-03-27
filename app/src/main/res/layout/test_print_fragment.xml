@@ -21,6 +21,12 @@
         android:layout_height="wrap_content"
         android:text="Открыть диалог выбора принтера" />
 
+    <Button
+        android:id="@+id/btBarcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Штрихкод" />
+
     <TextView
         android:id="@+id/tvMessage"
         android:layout_width="match_parent"

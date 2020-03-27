@@ -1,4 +1,4 @@
-package `fun`.gladkikh.cargologistic.presentation.print.printdialog
+package `fun`.gladkikh.cargologistic.presentation.printOld.printdialog
 
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity

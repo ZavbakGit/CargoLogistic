@@ -7,6 +7,7 @@ import `fun`.gladkikh.cargologistic.common.type.*
 import `fun`.gladkikh.cargologistic.common.utils.toFormatISO
 import `fun`.gladkikh.cargologistic.domain.entity.*
 import `fun`.gladkikh.cargologistic.domain.repository.AccountRepository
+import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -36,6 +37,8 @@ class AccountRepositoryImpl(
             Either.Left(Failure(e.toString()))
         }
     }
+
+    override fun getListPrintLabel(): LiveData<List<PrintLabelEntity>>  = dataBaseRequest.getListPrintLabel()
 
     override fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity> {
         val resultDb = dataBaseRequest.getProductByBarcode(barcode)

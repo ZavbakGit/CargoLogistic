@@ -4,17 +4,18 @@ import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.R
 import `fun`.gladkikh.cargologistic.common.ui.BaseFragment
 import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
-import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.printdialog.StatePrintLabelDialog
-import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.StatePrinterDialog
+import `fun`.gladkikh.cargologistic.presentation.printOld.PrintFragmentViewModelOld
+import `fun`.gladkikh.cargologistic.presentation.printOld.printdialog.StatePrintLabelDialog
+import `fun`.gladkikh.cargologistic.presentation.printOld.printerdialog.StatePrinterDialogOld
+import `fun`.gladkikh.cargologistic.ui.printlabel.PrintActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.test_print_fragment.*
 
-class PrintFragment : BaseFragment() {
+class PrintFragmentOld : BaseFragment() {
     override val layoutId = R.layout.test_print_fragment
 
-    private lateinit var viewModel: PrintFragmentViewModel
+    private lateinit var viewModel: PrintFragmentViewModelOld
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +36,15 @@ class PrintFragment : BaseFragment() {
 
     private fun handleShowChoicePrinterDialog(show: Boolean?) {
         var dialog = activity!!.supportFragmentManager
-            .findFragmentByTag(ChoicePrinterDialogFragment.TAG) as? ChoicePrinterDialogFragment
+            .findFragmentByTag(ChoicePrinterDialogFragmentOld.TAG) as? ChoicePrinterDialogFragmentOld
 
         if (dialog == null) {
-            dialog = ChoicePrinterDialogFragment()
+            dialog = ChoicePrinterDialogFragmentOld()
         }
 
         if (show == true) {
             if (!dialog.isVisible) {
-                dialog.show(activity!!.supportFragmentManager, ChoicePrinterDialogFragment.TAG)
+                dialog.show(activity!!.supportFragmentManager, ChoicePrinterDialogFragmentOld.TAG)
             }
         } else {
             try {
@@ -56,17 +57,17 @@ class PrintFragment : BaseFragment() {
     fun handleStatePrintLabelDialogViewModel(statePrintLabelDialog: StatePrintLabelDialog?) {
         if (statePrintLabelDialog?.isOpen == true) {
             val dialog =
-                activity!!.supportFragmentManager.findFragmentByTag(PrintLabelDialogFragment.TAG)
+                activity!!.supportFragmentManager.findFragmentByTag(PrintLabelDialogFragmentOld.TAG)
             if (dialog == null) {
-                PrintLabelDialogFragment().show(
+                PrintLabelDialogFragmentOld().show(
                     activity!!.supportFragmentManager,
-                    PrintLabelDialogFragment.TAG
+                    PrintLabelDialogFragmentOld.TAG
                 )
             }
         }
     }
 
-    fun handleStatePrinterDialogViewModel(statePrinterDialog: StatePrinterDialog?) {
+    fun handleStatePrinterDialogViewModel(statePrinterDialog: StatePrinterDialogOld?) {
 //        if (statePrinterDialog?.isOpen == true) {
 //            val dialog =
 //                activity!!.supportFragmentManager.findFragmentByTag(PrinterDialogFragment.TAG)

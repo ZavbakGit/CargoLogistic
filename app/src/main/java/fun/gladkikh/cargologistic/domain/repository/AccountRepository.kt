@@ -7,6 +7,7 @@ import `fun`.gladkikh.cargologistic.common.type.None
 import `fun`.gladkikh.cargologistic.domain.entity.AccountEntity
 import `fun`.gladkikh.cargologistic.domain.entity.PrintLabelEntity
 import `fun`.gladkikh.cargologistic.domain.entity.ProductEntity
+import androidx.lifecycle.LiveData
 import java.util.*
 
 interface AccountRepository {
@@ -15,6 +16,8 @@ interface AccountRepository {
     fun login(password: String): Either<Failure, AccountEntity>
     fun testRemoteRequest(): Either<Failure, String>
 
+
+    fun getListPrintLabel(): LiveData<List<PrintLabelEntity>>
     fun getProductByBarcode(barcode: String): Either<Failure, ProductEntity>
     fun printLabel(printLabelEntity: PrintLabelEntity): Either<Failure, PrintLabelEntity>
 }

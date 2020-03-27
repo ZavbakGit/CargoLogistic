@@ -1,21 +1,23 @@
-package `fun`.gladkikh.cargologistic.ui.print
+package `fun`.gladkikh.cargologistic.ui.printlabel
 
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.R
 import `fun`.gladkikh.cargologistic.common.ui.dialog.DialogMVVM
 import `fun`.gladkikh.cargologistic.domain.entity.PrinterEntity
-import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
+import `fun`.gladkikh.cargologistic.presentation.printOld.PrintFragmentViewModelOld
+import `fun`.gladkikh.cargologistic.presentation.printlabel.PrintLabelFragmentViewModel
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 
-class ChoicePrinterDialogFragment :DialogMVVM<List<PrinterEntity>,PrinterEntity>(){
+class ChoicePrinterDialogFragment :
+    DialogMVVM<List<PrinterEntity>,PrinterEntity>(){
 
     companion object{
         const val TAG = "ChoicePrinterDialogFragment"
     }
 
-    private lateinit var viewModel: PrintFragmentViewModel
+    private lateinit var viewModel: PrintLabelFragmentViewModel
 
     private val layoutId = R.layout.test_dialog
 
@@ -29,9 +31,9 @@ class ChoicePrinterDialogFragment :DialogMVVM<List<PrinterEntity>,PrinterEntity>
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val listPrinter = viewModel.getListPrinter().value ?: listOf()
+        val listPrinter = viewModel.listPrinter
         val list = listPrinter.map { it.name }.toTypedArray()
-        var currentPrinter = listPrinter.indexOfFirst { it.current == true }
+        var currentPrinter = listPrinter.indexOfFirst { it.guid == viewModel.currentPrinter?.guid }
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)

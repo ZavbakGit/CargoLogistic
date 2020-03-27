@@ -38,7 +38,7 @@ class TestDialog3 : DialogMVVM<String, String>() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    override fun refreshState(state: String) {
+    override fun setStateState(state: String?) {
         dialog?.setTitle(state)
     }
 }

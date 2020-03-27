@@ -9,6 +9,6 @@
         android:label="MainFragment" />
     <activity
         android:id="@+id/printActivity"
-        android:name="fun.gladkikh.cargologistic.ui.print.PrintActivity"
+        android:name="fun.gladkikh.cargologistic.ui.printlabel.PrintActivity"
         android:label="PrintActivity" />
 </navigation>

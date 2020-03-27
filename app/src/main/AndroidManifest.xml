@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.print.PrintActivity"/>
+        <activity android:name=".ui.printlabel.PrintActivity"/>
         <activity android:name=".ui.settings.SettingsActivity"/>
         <activity android:name=".ui.main.MainActivity"/>
 <!--        <activity android:name=".ui.test.TestActivity"/>-->

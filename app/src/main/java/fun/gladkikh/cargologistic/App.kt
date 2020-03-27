@@ -14,6 +14,11 @@ import `fun`.gladkikh.cargologistic.ui.login.LoginFragment
 import `fun`.gladkikh.cargologistic.ui.main.MainActivity
 import `fun`.gladkikh.cargologistic.ui.main.MainFragment
 import `fun`.gladkikh.cargologistic.ui.print.*
+import `fun`.gladkikh.cargologistic.ui.printlabel.ChoicePrinterDialogFragment
+import `fun`.gladkikh.cargologistic.ui.printlabel.PrintActivity
+import `fun`.gladkikh.cargologistic.ui.print.PrinterDialogFragment
+import `fun`.gladkikh.cargologistic.ui.printlabel.PrintLabelDialogFragment
+import `fun`.gladkikh.cargologistic.ui.printlabel.PrintLabelFragment
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsActivity
 import `fun`.gladkikh.cargologistic.ui.settings.SettingsFragment
 import `fun`.gladkikh.cargologistic.ui.test.TestActivity
@@ -86,8 +91,8 @@ class App : Application() {
 )
 interface AppComponent {
     fun inject(mainActivity: PrintActivity)
-    fun inject(printFragment: PrintFragment)
-    fun inject(printLabelDialogFragment: PrintLabelDialogFragment)
+    fun inject(printFragment: PrintFragmentOld)
+    fun inject(printLabelDialogFragment: PrintLabelDialogFragmentOld)
     fun inject(printerDialogFragment: PrinterDialogFragment)
     fun inject(loginActivity: LoginActivity)
     fun inject(loginFragment: LoginFragment)
@@ -99,6 +104,8 @@ interface AppComponent {
     fun inject(testFragment: TestFragment)
     fun inject(testDialog2: TestDialog2)
     fun inject(testDialog3: TestDialog3)
-    fun inject(printerDialogFragment1: ChoicePrinterDialogFragment)
-
+    fun inject(printerDialogFragment1: ChoicePrinterDialogFragmentOld)
+    fun inject(printLabelFragment: PrintLabelFragment)
+    fun inject(choicePrinterDialogFragment: ChoicePrinterDialogFragment)
+    fun inject(printLabelDialogFragment: PrintLabelDialogFragment)
 }

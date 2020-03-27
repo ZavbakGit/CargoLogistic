@@ -3,8 +3,8 @@ package `fun`.gladkikh.cargologistic.ui.print
 import `fun`.gladkikh.cargologistic.App
 import `fun`.gladkikh.cargologistic.common.ui.BaseDialog
 import `fun`.gladkikh.cargologistic.common.ui.ext.onEvent
-import `fun`.gladkikh.cargologistic.presentation.print.PrintFragmentViewModel
-import `fun`.gladkikh.cargologistic.presentation.print.printerdialog.StatePrinterDialog
+import `fun`.gladkikh.cargologistic.presentation.printOld.PrintFragmentViewModelOld
+import `fun`.gladkikh.cargologistic.presentation.printOld.printerdialog.StatePrinterDialogOld
 import android.app.Dialog
 import android.os.Bundle
 import android.view.KeyEvent
@@ -16,7 +16,7 @@ class PrinterDialogFragment : BaseDialog() {
         const val TAG = "ListPrinterDialog"
     }
 
-    private lateinit var viewModel: PrintFragmentViewModel
+    private lateinit var viewModel: PrintFragmentViewModelOld
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +78,7 @@ class PrinterDialogFragment : BaseDialog() {
         )
     }
 
-    fun handleState(statePrinterDialog: StatePrinterDialog?) {
+    fun handleState(statePrinterDialog: StatePrinterDialogOld?) {
         if (statePrinterDialog?.isOpen != true) {
             dismiss()
         }

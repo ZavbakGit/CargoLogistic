@@ -19,8 +19,8 @@ interface PrintLabelDao{
     @Update
     fun update(entity: PrintLabelDb)
 
-    @Query("SELECT * FROM print_label")
-    fun getPrintLabelList():List<PrintLabelDb>
+    @Query("SELECT * FROM print_label ORDER BY datePrint DESC")
+    fun getPrintLabelList():LiveData<List<PrintLabelDb>>
 
     @Query("DELETE FROM print_label")
     fun deleteAllPrintLabel()
