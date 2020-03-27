@@ -48,6 +48,7 @@ class PrintLabelFragmentViewModel @Inject constructor(
             }
         }
 
+
     fun openPrinterDialog() {
         showChoicePrinterDialog.postValue(true)
     }
@@ -91,7 +92,7 @@ class PrintLabelFragmentViewModel @Inject constructor(
         val countLabel: Int
     )
 
-    fun openPrintLabelDialog() {
+    fun openPrintLabelDialogTest() {
         printLabelDialog.setState(
             StatePrintLabelDialog(
                 barcode = "54165465465",
@@ -118,7 +119,7 @@ class PrintLabelFragmentViewModel @Inject constructor(
 
 
     fun readBarcode(barcode: String) {
-        updateMessage(Message(barcode))
+        //updateMessage(Message(barcode))
 
         if (printLabelDialog.isOpen != true) {
             if (!barcode.isNullOrBlank()) {
@@ -148,6 +149,7 @@ class PrintLabelFragmentViewModel @Inject constructor(
     private fun printLabel(
         printLabelEntity: PrintLabelEntity
     ) {
+        updateProgress(Progress(true, "Отправка на печать!"))
         printLabelUseCase(printLabelEntity, viewModelScope) {
             updateProgress(Progress(false))
             it.either(::updateFailure, ::handlePrintLabel)
@@ -171,6 +173,19 @@ class PrintLabelFragmentViewModel @Inject constructor(
                 currentPrinter = currentPrinter ?: listPrinter.first(),
                 productEntity = productEntity,
                 dateCreate = dateCreate
+            )
+        )
+        showPrintLabelDialog.postValue(true)
+    }
+
+    fun copyLabel(printLabel: PrintLabelEntity) {
+        printLabelDialog.setState(
+            StatePrintLabelDialog(
+                barcode = printLabel.barcodeRead,
+                countLabel = 1,
+                currentPrinter = printLabel.printer,
+                productEntity = printLabel.product,
+                dateCreate = printLabel.dateCreate
             )
         )
         showPrintLabelDialog.postValue(true)

@@ -11,9 +11,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 
 class ChoicePrinterDialogFragment :
-    DialogMVVM<List<PrinterEntity>,PrinterEntity>(){
+    DialogMVVM<List<PrinterEntity>, PrinterEntity>() {
 
-    companion object{
+    companion object {
         const val TAG = "ChoicePrinterDialogFragment"
     }
 
@@ -33,7 +33,13 @@ class ChoicePrinterDialogFragment :
 
         val listPrinter = viewModel.listPrinter
         val list = listPrinter.map { it.name }.toTypedArray()
-        var currentPrinter = listPrinter.indexOfFirst { it.guid == viewModel.currentPrinter?.guid }
+
+        val guidCurrentPrinter =
+            viewModel.printLabelDialog.getCurrentPinter().value?.guid
+                ?: viewModel.currentPrinter?.guid
+
+        var currentPrinter =
+            listPrinter.indexOfFirst { it.guid == guidCurrentPrinter }
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)

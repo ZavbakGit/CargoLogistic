@@ -134,6 +134,9 @@ class PrintLabelDialogFragment :
 
     fun handleCurrentPrinter(printer: PrinterEntity?) {
         edPrinter.setText(printer?.name ?: "Не выбран...")
+        if (printer != null){
+            dialogViewModel?.setState(viewModel.printLabelDialog.getStateLiveData().value!!.copy(currentPrinter = printer))
+        }
     }
 
 
